@@ -18,8 +18,15 @@ const translations = {
 };
 
 let language = localStorage.getItem('ops-language') || 'en';
+let theme = localStorage.getItem('ops-theme') || (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 let connection = readConnection();
-const elements = Object.fromEntries(['triageForm','requestText','resultPanel','emptyState','loadingState','resultContent','errorState','errorMessage','caseId','category','priority','review','engine','summary','nextAction','missing','sourceTitle','sourceExcerpt','sourceId','auditTrail','languageButton','connectionButton','connectionDialog','connectionForm','webhookUrl','useLocalAiButton','modeLabel'].map((id) => [id, document.getElementById(id)]));
+const elements = Object.fromEntries(['triageForm','requestText','resultPanel','emptyState','loadingState','resultContent','errorState','errorMessage','caseId','category','priority','review','engine','summary','nextAction','missing','sourceTitle','sourceExcerpt','sourceId','auditTrail','themeButton','languageButton','connectionButton','connectionDialog','connectionForm','webhookUrl','useLocalAiButton','modeLabel'].map((id) => [id, document.getElementById(id)]));
+
+function applyTheme() {
+  document.documentElement.dataset.theme = theme;
+  elements.themeButton.setAttribute('aria-pressed', String(theme === 'dark'));
+  elements.themeButton.textContent = theme === 'dark' ? '☼' : '◐';
+}
 
 function readConnection() {
   try { return JSON.parse(localStorage.getItem('ops-connection')) || { mode: 'simulation', webhookUrl: '' }; }
@@ -80,6 +87,7 @@ elements.triageForm.addEventListener('submit', async (event) => {
 
 document.querySelectorAll('[data-example]').forEach((button) => button.addEventListener('click', () => { elements.requestText.value = translations[language].examples[button.dataset.example]; elements.requestText.focus(); }));
 elements.languageButton.addEventListener('click', () => { language = language === 'en' ? 'es' : 'en'; localStorage.setItem('ops-language', language); applyLanguage(); });
+elements.themeButton.addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('ops-theme', theme); applyTheme(); });
 elements.connectionButton.addEventListener('click', () => {
   elements.connectionForm.elements.mode.value = connection.mode; elements.webhookUrl.value = connection.webhookUrl; elements.connectionDialog.showModal();
 });
@@ -95,4 +103,5 @@ elements.useLocalAiButton.addEventListener('click', () => {
   localStorage.setItem('ops-connection', JSON.stringify(connection)); updateModeLabel(); elements.connectionDialog.close();
 });
 
+applyTheme();
 applyLanguage();

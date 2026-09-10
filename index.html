@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="AI Operations Desk: an auditable operational request triage demonstration.">
   <title>AI Operations Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,6 +15,7 @@
   <header class="topbar">
     <a class="brand" href="#">AI Operations Desk</a>
     <div class="top-actions">
+      <button id="themeButton" class="text-button theme-button" type="button" aria-label="Change color theme" aria-pressed="false">◐</button>
       <button id="languageButton" class="text-button" type="button" aria-label="Change language">ES</button>
       <button id="connectionButton" class="text-button" type="button" data-i18n="connection">Connection</button>
       <span class="status"><span class="status-dot"></span><span id="modeLabel">Simulation</span></span>
