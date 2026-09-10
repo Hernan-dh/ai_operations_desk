@@ -18,6 +18,8 @@ The versioned workflow targets Structured Output Parser 1.1, whose schema parame
 
 The AI test endpoint is `/webhook-test/operations-desk-triage-ai`; the published endpoint is `/webhook/operations-desk-triage-ai`. Both preserve the frontend response contract. Keep the baseline endpoint active during rollout so the working demonstration remains recoverable.
 
+When the static demo runs locally on `http://127.0.0.1:4174`, open **Connection** and select **Use local AI workflow**. This stores `http://localhost:5678/webhook/operations-desk-triage-ai` only in that browser and enables n8n mode. The local webhook permits that browser origin; for a hosted frontend, paste its own HTTPS webhook URL instead.
+
 ## Public deployment
 
 Deploy the static frontend on any static host. Use simulation mode for a permanent zero-cost presentation. For live mode, deploy n8n behind HTTPS, add reverse-proxy rate limiting, configure a durable volume, set a strong encryption key, and restrict editor access. Never expose the n8n editor through an iframe.

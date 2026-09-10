@@ -16,7 +16,7 @@ Browser UI ── simulation mode ──> shared triage contract
                                                    ─> deterministic approval policy
 ```
 
-- `index.html`, `styles.css`, and `app.js` provide the bilingual public demo.
+- `index.html`, `styles.css`, and `app.js` provide the bilingual public demo. Its Connection dialog includes a local-only convenience action that selects the AI webhook; custom webhook URLs remain browser-local configuration.
 - `triage-engine.js` implements the zero-cost browser baseline.
 - `workflows/triage-request.json` implements the same contract in n8n.
 - `workflows/triage-request-ai.json` adds schema-validated Gemini classification and falls back to the baseline on model or parsing failure.

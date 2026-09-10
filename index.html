@@ -78,8 +78,9 @@
       <label><input type="radio" name="mode" value="simulation" checked> <span data-i18n="simulationMode">Browser simulation</span></label>
       <label><input type="radio" name="mode" value="webhook"> <span data-i18n="webhookMode">n8n webhook</span></label>
       <label for="webhookUrl" data-i18n="webhookLabel">Production webhook URL</label>
-      <input id="webhookUrl" name="webhookUrl" type="url" placeholder="https://…/webhook/operations-desk-triage">
+      <input id="webhookUrl" name="webhookUrl" type="url" placeholder="https://…/webhook/operations-desk-triage-ai">
       <p data-i18n="connectionHelp">The URL stays in this browser and is never included in the repository.</p>
+      <button id="useLocalAiButton" class="secondary-button" type="button" data-i18n="useLocalAi">Use local AI workflow</button>
       <button class="primary-button" value="save" data-i18n="save">Save connection</button>
     </form>
   </dialog>

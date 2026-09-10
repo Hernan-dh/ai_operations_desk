@@ -33,6 +33,12 @@ http://localhost:5678/webhook/operations-desk-triage-ai
 
 The AI workflow validates structured model output and applies approval policy after the model. If the model fails or returns invalid data, the deterministic baseline produces the response. Keep the original workflow active until the AI endpoint has been verified.
 
+For the local demo, use **Connection** → **Use local AI workflow**. The button selects this URL only in your browser; it is never versioned:
+
+```text
+http://localhost:5678/webhook/operations-desk-triage-ai
+```
+
 ## Verify
 
 ```powershell
