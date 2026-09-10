@@ -46,6 +46,9 @@ textarea:focus,input:focus { outline:2px solid var(--accent); outline-offset:2px
 .decision-row>div:last-child { border:0; }
 .decision-row small,.result-block small { display:block; margin-bottom:.55rem; }
 .decision-row strong { text-transform:capitalize; }
+.engine-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.85rem 0; border-bottom:1px solid var(--line); }
+.engine-row small { color:var(--muted); font-size:.7rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+.engine-row code { padding:.3rem .5rem; color:var(--green); background:#edf2ed; font-size:.75rem; overflow-wrap:anywhere; }
 .result-block { padding:1.25rem 0; border-bottom:1px solid var(--line); }
 .result-block p { margin:0; line-height:1.5; }
 .tags { display:flex; flex-wrap:wrap; gap:.5rem; }

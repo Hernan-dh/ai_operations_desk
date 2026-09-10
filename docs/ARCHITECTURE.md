@@ -21,6 +21,7 @@ Browser UI ── simulation mode ──> shared triage contract
 - `workflows/triage-request.json` implements the same contract in n8n.
 - `workflows/triage-request-ai.json` adds schema-validated Gemini classification and falls back to the baseline on model or parsing failure.
 - Both implementations return a category, priority, review decision, missing fields, retrieved procedure, and audit trail.
+- The response also carries an `engine` identifier. The UI displays it as execution evidence: `gemini-with-deterministic-policy-v1` for a validated model result or a deterministic fallback identifier when the model cannot be used.
 
 ## Trust boundaries
 
