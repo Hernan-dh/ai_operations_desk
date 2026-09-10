@@ -10,6 +10,14 @@ Copy `.env.example` to `.env`, replace `N8N_ENCRYPTION_KEY`, and run `docker com
 
 The `.n8n` directory contains local state and is ignored. Back it up before recreating the container. Export material workflows into `workflows/`; credentials must never be included.
 
+## AI workflow
+
+Import `workflows/triage-request-ai.json` without replacing the stable baseline. Create a Google Gemini credential from the n8n credential selector and assign it to **Gemini classifier**; imported workflows intentionally contain no credential identifiers. Run a test execution and confirm the response `engine` is `gemini-with-deterministic-policy-v1`. A missing, unavailable, or invalid model response should instead return `deterministic-fallback-v1`.
+
+The versioned workflow targets Structured Output Parser 1.1, whose schema parameter is named `jsonSchema`. Newer parser versions use `inputSchema`; `scripts/verify.py` checks this version-specific requirement so an ignored schema cannot silently force every model response into fallback.
+
+The AI test endpoint is `/webhook-test/operations-desk-triage-ai`; the published endpoint is `/webhook/operations-desk-triage-ai`. Both preserve the frontend response contract. Keep the baseline endpoint active during rollout so the working demonstration remains recoverable.
+
 ## Public deployment
 
 Deploy the static frontend on any static host. Use simulation mode for a permanent zero-cost presentation. For live mode, deploy n8n behind HTTPS, add reverse-proxy rate limiting, configure a durable volume, set a strong encryption key, and restrict editor access. Never expose the n8n editor through an iframe.

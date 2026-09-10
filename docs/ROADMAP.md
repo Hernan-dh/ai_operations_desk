@@ -8,12 +8,13 @@
 - n8n webhook with the same response contract.
 - No-cost simulation fallback.
 
-## Increment 2 — AI enrichment
+## Increment 2 — AI enrichment (implemented, pending credentialed test)
 
-- Add an optional LLM classifier with structured output.
-- Keep deterministic approval and input-validation policies.
-- Record model, latency, and fallback reason in the audit event.
-- Build a labeled evaluation fixture before accepting model routing.
+- [x] Add an optional LLM classifier with structured output.
+- [x] Keep deterministic approval and input-validation policies.
+- [x] Record the selected engine or fallback in the audit event.
+- [ ] Record model latency.
+- [ ] Build a labeled evaluation fixture before accepting model routing.
 
 ## Increment 3 — grounded knowledge
 

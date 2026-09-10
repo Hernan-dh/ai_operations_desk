@@ -17,11 +17,21 @@ Open `http://127.0.0.1:4174`.
 ## Connect n8n
 
 1. Start n8n with `docker compose up -d` or use an existing instance.
-2. Import `workflows/triage-request.json`.
+2. Import `workflows/triage-request.json` for the credential-free baseline.
 3. Publish the workflow and copy its production webhook URL.
 4. In the demo, open **Connection**, select **n8n webhook**, and paste the URL.
 
 Do not expose an unrestricted webhook permanently. Add rate limiting at the reverse proxy and keep credentials inside n8n.
+
+### Enable AI classification
+
+Import `workflows/triage-request-ai.json` as a separate workflow. In n8n, create a Google Gemini credential using your API key and select it in **Gemini classifier**. Test the workflow before publishing it, then connect the frontend to:
+
+```text
+http://localhost:5678/webhook/operations-desk-triage-ai
+```
+
+The AI workflow validates structured model output and applies approval policy after the model. If the model fails or returns invalid data, the deterministic baseline produces the response. Keep the original workflow active until the AI endpoint has been verified.
 
 ## Verify
 
@@ -46,6 +56,6 @@ Run without `--preview` to verify, stage, commit, and push after typing the expl
 - Deterministic, explainable baseline shared by the browser and n8n.
 - Synthetic procedures and examples only.
 - No persistence and no external side effects.
-- The LLM enrichment, RAG index, approval inbox, and evaluation dataset are planned increments rather than simulated claims.
+- Gemini enrichment is available in a separate opt-in workflow; the RAG index, approval inbox, and evaluation dataset remain planned increments rather than simulated claims.
 
 See [architecture](docs/ARCHITECTURE.md), [operations](docs/OPERATIONS.md), and the [roadmap](docs/ROADMAP.md).

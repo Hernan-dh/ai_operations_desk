@@ -30,13 +30,26 @@ def main():
     for resource in parser.resources:
         if not resource.startswith(("http://", "https://")) and not (ROOT / resource).exists():
             errors.append(f"Missing resource: {resource}")
-    workflow_path = ROOT / "workflows" / "triage-request.json"
-    try:
-        workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
-        if not workflow.get("nodes") or not workflow.get("connections"):
-            errors.append("Workflow requires nodes and connections")
-    except (OSError, json.JSONDecodeError) as exc:
-        errors.append(f"Invalid workflow JSON: {exc}")
+    for workflow_path in sorted((ROOT / "workflows").glob("*.json")):
+        try:
+            workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
+            if not workflow.get("nodes") or not workflow.get("connections"):
+                errors.append(f"Workflow requires nodes and connections: {workflow_path.name}")
+            node_names = [node.get("name") for node in workflow.get("nodes", [])]
+            if len(node_names) != len(set(node_names)):
+                errors.append(f"Workflow node names must be unique: {workflow_path.name}")
+            for node in workflow.get("nodes", []):
+                if node.get("type") == "@n8n/n8n-nodes-langchain.outputParserStructured":
+                    parameters = node.get("parameters", {})
+                    version = float(node.get("typeVersion", 0))
+                    schema_key = "jsonSchema" if version <= 1.1 else "inputSchema"
+                    if not parameters.get(schema_key):
+                        errors.append(
+                            f"Structured parser {node.get('name')} requires {schema_key} "
+                            f"for node version {version}: {workflow_path.name}"
+                        )
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"Invalid workflow JSON {workflow_path.name}: {exc}")
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
