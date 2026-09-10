@@ -30,4 +30,4 @@ The webhook URL is optional configuration stored in browser local storage. It is
 
 ## Evolution path
 
-The model only proposes category, priority, summary, and missing information. A post-model code node validates those values, selects the procedure from a controlled map, and calculates human review from deterministic policy. A later RAG component may replace the in-workflow procedure map while preserving procedure identifiers and citations in the response contract.
+The model proposes category, priority, and a summary. A post-model code node validates those values, retains missing-information requirements from the deterministic baseline, selects the procedure from a controlled map, and calculates human review from deterministic policy. A later RAG component may replace the in-workflow procedure map while preserving procedure identifiers and citations in the response contract.

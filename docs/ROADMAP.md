@@ -13,6 +13,7 @@
 - [x] Add an optional LLM classifier with structured output.
 - [x] Keep deterministic approval and input-validation policies.
 - [x] Record the selected engine or fallback in the audit event.
+- [x] Keep missing-information requirements deterministic after observing model overreach in an integration test.
 - [ ] Record model latency.
 - [ ] Build a labeled evaluation fixture before accepting model routing.
 
