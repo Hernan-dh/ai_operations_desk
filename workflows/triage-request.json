@@ -1,0 +1,58 @@
+{
+  "name": "AI Operations Desk - Triage Request",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "operations-desk-triage",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "7ee5d751-c3b6-46f7-a1d9-e57463fcb234",
+      "name": "Receive request",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-420, 0],
+      "webhookId": "1fb0b1a0-bdbd-4c38-b67d-78956368d80a"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst request = String(input.body?.request ?? input.request ?? '').trim();\nif (request.length < 12 || request.length > 1200) throw new Error('Request must contain between 12 and 1200 characters.');\nconst text = request.toLowerCase();\nconst any = (xs) => xs.some((x) => text.includes(x));\nconst rules = [\n { category:'access', words:['access','acceso','login','permission','permiso','repository','repositorio','password','contraseña'], id:'OPS-ACC-003', title:'Repository and system access', excerpt:'Confirm the resource, business need, and accountable approver before granting access.', fields:[['resource or repository',['repository','repositorio','github','drive','system','sistema']],['responsible approver',['approved by','aprobado por','manager','responsable','supervisor']]] },\n { category:'billing', words:['invoice','factura','billing','cobro','amount','importe','payment','pago'], id:'OPS-FIN-004', title:'Invoice discrepancy review', excerpt:'Record the invoice reference and disputed amount; finance must approve any correction.', fields:[['invoice reference',['inv-','invoice #','factura ','número']],['disputed amount',['$','usd','eur','ars','importe','amount']]] },\n { category:'technical', words:['down','unavailable','caído','no funciona','error','service','servicio','server','servidor'], id:'OPS-TEC-002', title:'Service incident response', excerpt:'Identify the affected service, impact, and start time before assigning incident severity.', fields:[['affected service',['service','servicio','server','servidor','api','website','sitio']],['business impact',['team','equipo','client','cliente','users','usuarios','delivery','entrega']]] }\n];\nconst ranked = rules.map((rule) => ({...rule, score:rule.words.filter((word) => text.includes(word)).length})).sort((a,b) => b.score-a.score);\nconst found = ranked[0].score ? ranked[0] : { category:'general', id:'OPS-GEN-001', title:'General request intake', excerpt:'Confirm the objective, desired deadline, and accountable owner before routing the request.', fields:[['desired outcome',['need','necesito','request','solicito']],['desired deadline',['today','hoy','tomorrow','mañana','urgent','urgente']]] };\nconst missing = found.fields.filter(([, patterns]) => !patterns.some((p) => text.includes(p))).map(([label]) => label);\nconst urgent = any(['urgent','urgente','today','hoy','blocked','bloqueado','all users','todos los usuarios']);\nconst sensitive = ['access','billing'].includes(found.category);\nconst priority = urgent ? 'high' : missing.length === 0 ? 'medium' : 'normal';\nconst humanReview = sensitive || urgent;\nreturn [{json:{caseId:`OPS-${Date.now().toString(36).toUpperCase()}`,category:found.category,priority,humanReview,summary:`A ${priority}-priority ${found.category} request was identified from the submitted description.`,nextAction:missing.length?`Request clarification: ${missing.join(', ')}.`:humanReview?'Send the proposed action to an accountable reviewer.':'Route the case to the operations queue.',missing,procedure:{id:found.id,title:found.title,excerpt:found.excerpt},audit:['Input length and type validated',`Matched procedure ${found.id} using explicit keywords`,`${missing.length} required field(s) missing`,humanReview?'Human review required by safety policy':'Automatic routing allowed by safety policy'],engine:'deterministic-baseline-v1'}}];"
+      },
+      "id": "4b0a4215-d5f8-49bc-a49a-567e3632cf91",
+      "name": "Validate and triage",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-160, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Cache-Control", "value": "no-store" }
+            ]
+          }
+        }
+      },
+      "id": "25a31b3c-b8b0-4891-939d-a0dc7251cf1a",
+      "name": "Return case",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [100, 0]
+    }
+  ],
+  "connections": {
+    "Receive request": { "main": [[{ "node": "Validate and triage", "type": "main", "index": 0 }]] },
+    "Validate and triage": { "main": [[{ "node": "Return case", "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "settings": { "executionOrder": "v1" },
+  "active": false,
+  "versionId": "4d165306-43c5-4480-ae7f-5794ced31e30",
+  "meta": { "templateCredsSetupCompleted": true },
+  "tags": []
+}

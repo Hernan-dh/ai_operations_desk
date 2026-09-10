@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI Operations Desk: an auditable operational request triage demonstration.">
+  <title>AI Operations Desk</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to workspace</a>
+  <header class="topbar">
+    <a class="brand" href="#">AI Operations Desk</a>
+    <div class="top-actions">
+      <button id="languageButton" class="text-button" type="button" aria-label="Change language">ES</button>
+      <button id="connectionButton" class="text-button" type="button" data-i18n="connection">Connection</button>
+      <span class="status"><span class="status-dot"></span><span id="modeLabel">Simulation</span></span>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <p class="eyebrow" data-i18n="eyebrow">AUDITABLE AUTOMATION / CASE 001</p>
+      <h1 data-i18n="title">Turn an unstructured request into an actionable case.</h1>
+      <p class="lede" data-i18n="lede">Rules establish the safety boundary. The analysis classifies the request, retrieves a procedure, and explains when a person must intervene.</p>
+    </section>
+
+    <section class="workspace" aria-label="Request triage workspace">
+      <form id="triageForm" class="request-panel">
+        <div class="panel-heading">
+          <div><span>01</span><h2 data-i18n="incoming">Incoming request</h2></div>
+          <span class="privacy" data-i18n="synthetic">Synthetic data only</span>
+        </div>
+        <label for="requestText" data-i18n="requestLabel">What does the operations team need to resolve?</label>
+        <textarea id="requestText" name="request" maxlength="1200" required></textarea>
+        <div class="examples" aria-label="Example requests">
+          <span data-i18n="tryExample">Try an example</span>
+          <button type="button" data-example="access" data-i18n="accessExample">Repository access</button>
+          <button type="button" data-example="billing" data-i18n="billingExample">Incorrect invoice</button>
+          <button type="button" data-example="technical" data-i18n="technicalExample">Service unavailable</button>
+        </div>
+        <button class="primary-button" type="submit"><span data-i18n="analyze">Analyze request</span><span aria-hidden="true">→</span></button>
+      </form>
+
+      <section id="resultPanel" class="result-panel" aria-live="polite" aria-busy="false">
+        <div class="panel-heading"><div><span>02</span><h2 data-i18n="caseAnalysis">Case analysis</h2></div><span id="caseId">WAITING</span></div>
+        <div id="emptyState" class="empty-state">
+          <div class="route-mark" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p data-i18n="empty">Submit a request to inspect its route, evidence, and decision.</p>
+        </div>
+        <div id="loadingState" class="loading-state" hidden><span></span><p data-i18n="processing">Validating and routing request…</p></div>
+        <div id="resultContent" hidden>
+          <div class="decision-row">
+            <div><small data-i18n="category">Category</small><strong id="category"></strong></div>
+            <div><small data-i18n="priority">Priority</small><strong id="priority"></strong></div>
+            <div><small data-i18n="review">Human review</small><strong id="review"></strong></div>
+          </div>
+          <div class="result-block"><small data-i18n="summary">Operational summary</small><p id="summary"></p></div>
+          <div class="result-block"><small data-i18n="nextAction">Next action</small><p id="nextAction"></p></div>
+          <div class="result-block"><small data-i18n="missing">Missing information</small><div id="missing" class="tags"></div></div>
+          <div class="source-card"><span data-i18n="retrievedProcedure">Retrieved procedure</span><strong id="sourceTitle"></strong><p id="sourceExcerpt"></p><code id="sourceId"></code></div>
+          <details><summary data-i18n="auditTrail">Audit trail</summary><ol id="auditTrail"></ol></details>
+        </div>
+        <div id="errorState" class="error-state" hidden><strong data-i18n="errorTitle">The request could not be processed.</strong><p id="errorMessage"></p></div>
+      </section>
+    </section>
+
+    <section class="principles">
+      <article><span>01</span><h3 data-i18n="boundedTitle">Bounded decisions</h3><p data-i18n="boundedText">Deterministic rules control sensitive actions and escalation.</p></article>
+      <article><span>02</span><h3 data-i18n="evidenceTitle">Visible evidence</h3><p data-i18n="evidenceText">Every recommendation identifies its supporting procedure.</p></article>
+      <article><span>03</span><h3 data-i18n="fallbackTitle">Graceful fallback</h3><p data-i18n="fallbackText">The workflow remains useful when an AI provider is unavailable.</p></article>
+    </section>
+  </main>
+
+  <dialog id="connectionDialog">
+    <form method="dialog" id="connectionForm">
+      <div class="dialog-heading"><h2 data-i18n="connectionTitle">Connection</h2><button value="cancel" aria-label="Close">×</button></div>
+      <label><input type="radio" name="mode" value="simulation" checked> <span data-i18n="simulationMode">Browser simulation</span></label>
+      <label><input type="radio" name="mode" value="webhook"> <span data-i18n="webhookMode">n8n webhook</span></label>
+      <label for="webhookUrl" data-i18n="webhookLabel">Production webhook URL</label>
+      <input id="webhookUrl" name="webhookUrl" type="url" placeholder="https://…/webhook/operations-desk-triage">
+      <p data-i18n="connectionHelp">The URL stays in this browser and is never included in the repository.</p>
+      <button class="primary-button" value="save" data-i18n="save">Save connection</button>
+    </form>
+  </dialog>
+
+  <script src="triage-engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

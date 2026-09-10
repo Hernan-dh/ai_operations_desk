@@ -1,0 +1,8 @@
+.env
+.DS_Store
+Thumbs.db
+node_modules/
+.n8n/
+coverage/
+*.log
+__pycache__/
