@@ -24,6 +24,12 @@ When the static demo runs locally on `http://127.0.0.1:4174`, open **Connection*
 
 Deploy the static frontend on any static host. Use simulation mode for a permanent zero-cost presentation. For live mode, deploy n8n behind HTTPS, add reverse-proxy rate limiting, configure a durable volume, set a strong encryption key, and restrict editor access. Never expose the n8n editor through an iframe.
 
+### GitHub Pages
+
+The versioned workflow `.github/workflows/deploy-pages.yml` deploys the repository root after a push to `main` and can also be run manually. Once, in the GitHub repository settings, set **Pages** → **Build and deployment** → **Source** to **GitHub Actions**. The generated deployment URL appears in the workflow summary.
+
+Pages hosts only static files and intentionally has no access to `.env` or n8n credentials. The default browser simulation is safe to publish. A live webhook used from Pages must use HTTPS and must allow the Pages site origin through CORS; never configure it with a wildcard origin when authentication is later added.
+
 ## Verification
 
 Run:

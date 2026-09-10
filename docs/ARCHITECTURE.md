@@ -29,6 +29,8 @@ The browser is untrusted. It limits input length for usability, but the workflow
 
 The webhook URL is optional configuration stored in browser local storage. It is not present in source control. Synthetic procedures deliberately avoid private organizational data.
 
+GitHub Pages can host the static frontend directly from this repository. It has no access to `.env`, n8n state, or credentials. A live integration crosses from the public browser to a separately hosted HTTPS webhook; the browser retains control of whether that optional connection is used.
+
 ## Evolution path
 
 The model proposes category, priority, and a summary. A post-model code node validates those values, retains missing-information requirements from the deterministic baseline, selects the procedure from a controlled map, and calculates human review from deterministic policy. A later RAG component may replace the in-workflow procedure map while preserving procedure identifiers and citations in the response contract.

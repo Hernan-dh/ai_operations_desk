@@ -39,6 +39,16 @@ For the local demo, use **Connection** → **Use local AI workflow**. The button
 http://localhost:5678/webhook/operations-desk-triage-ai
 ```
 
+## Publish the static demo
+
+The repository includes a GitHub Pages workflow. In GitHub, open **Settings** → **Pages**, select **GitHub Actions** as the source, and push the default branch. The Actions workflow deploys the static frontend automatically.
+
+The public demo starts in browser simulation mode, so it does not need API keys, n8n, or a backend. To connect a deployed page to the live AI workflow, use **Connection** and provide an HTTPS webhook URL. A public HTTPS page cannot call a local or plain-HTTP endpoint because browsers block mixed-content requests.
+
+## Portfolio evidence
+
+The public page is intentionally transparent about using synthetic data and simulation by default. Pair it with the versioned AI workflow and a short local-execution recording to demonstrate the real Gemini integration without exposing a permanent public webhook. See [portfolio evidence](docs/PORTFOLIO.md) for a capture checklist, video outline, and suggested project description.
+
 ## Verify
 
 ```powershell
