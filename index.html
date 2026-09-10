@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AI Operations Desk: an auditable operational request triage demonstration.">
+  <meta name="description" content="AI Operations Desk: n8n-orchestrated, auditable operational request triage with a deterministic fallback.">
   <title>AI Operations Desk</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,15 +18,15 @@
       <button id="themeButton" class="text-button theme-button" type="button" aria-label="Change color theme" aria-pressed="false">◐</button>
       <button id="languageButton" class="text-button" type="button" aria-label="Change language">ES</button>
       <button id="connectionButton" class="text-button" type="button" data-i18n="connection">Connection</button>
-      <span class="status"><span class="status-dot"></span><span id="modeLabel">Simulation</span></span>
+      <span class="status"><span class="status-dot"></span><span id="modeLabel">Fallback</span></span>
     </div>
   </header>
 
   <main id="main">
     <section class="hero">
       <p class="eyebrow" data-i18n="eyebrow">AUDITABLE AUTOMATION / CASE 001</p>
-      <h1 data-i18n="title">Turn an unstructured request into an actionable case.</h1>
-      <p class="lede" data-i18n="lede">Rules establish the safety boundary. The analysis classifies the request, retrieves a procedure, and explains when a person must intervene.</p>
+      <h1 data-i18n="title">Route an unstructured request through an actionable n8n workflow.</h1>
+      <p class="lede" data-i18n="lede">n8n validates and routes the request, applies deterministic policy, and can enrich the case with Gemini. A local deterministic engine is retained only as a recoverable fallback.</p>
       <p class="demo-notice"><span aria-hidden="true">●</span> <span data-i18n="demoNotice">Public demo uses synthetic data and browser simulation by default.</span></p>
     </section>
 
@@ -81,9 +81,9 @@
   <dialog id="connectionDialog">
     <form method="dialog" id="connectionForm">
       <div class="dialog-heading"><h2 data-i18n="connectionTitle">Connection</h2><button value="cancel" aria-label="Close">×</button></div>
-      <label><input type="radio" name="mode" value="simulation" checked> <span data-i18n="simulationMode">Browser simulation</span></label>
-      <label><input type="radio" name="mode" value="webhook"> <span data-i18n="webhookMode">n8n webhook</span></label>
-      <label for="webhookUrl" data-i18n="webhookLabel">Production webhook URL</label>
+      <label><input type="radio" name="mode" value="webhook" checked> <span data-i18n="webhookMode">n8n workflow (primary)</span></label>
+      <label><input type="radio" name="mode" value="simulation"> <span data-i18n="simulationMode">Deterministic fallback</span></label>
+      <label for="webhookUrl" data-i18n="webhookLabel">n8n production webhook URL</label>
       <input id="webhookUrl" name="webhookUrl" type="url" placeholder="https://…/webhook/operations-desk-triage-ai">
       <p data-i18n="connectionHelp">The URL stays in this browser and is never included in the repository.</p>
       <button id="useLocalAiButton" class="secondary-button" type="button" data-i18n="useLocalAi">Use local AI workflow</button>

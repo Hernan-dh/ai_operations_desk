@@ -2,22 +2,19 @@
 
 ## Purpose
 
-AI Operations Desk demonstrates how an operations request moves through validation, classification, procedure retrieval, and a bounded escalation decision. The current release is an explainable deterministic baseline, not a production decision system.
+AI Operations Desk demonstrates how an operations request moves through validation, classification, procedure retrieval, and a bounded escalation decision. n8n is the primary orchestration path; deterministic logic remains the policy boundary and a recoverable browser fallback, not the intended main execution path.
 
 ## Components
 
 ```text
-Browser UI ── simulation mode ──> shared triage contract
-    │
-    └──── n8n mode ──> public webhook ──> deterministic baseline ──> JSON response
-                                              │
-                                              └─> optional Gemini enrichment
-                                                   ─> schema validation
-                                                   ─> deterministic approval policy
+Browser UI ── configured n8n webhook (primary) ──> n8n workflow ──> JSON response
+    │                                                ├─> deterministic baseline or Gemini enrichment
+    │                                                └─> schema validation → deterministic approval policy
+    └──── webhook absent or unavailable ──> browser deterministic fallback ──> JSON response
 ```
 
-- `index.html`, `styles.css`, and `app.js` provide the bilingual public demo. Its Connection dialog includes a local-only convenience action that selects the AI webhook; custom webhook URLs remain browser-local configuration.
-- `triage-engine.js` implements the zero-cost browser baseline.
+- `index.html`, `styles.css`, and `app.js` provide the bilingual public demo. Its Connection dialog selects the n8n workflow as the primary route; custom webhook URLs remain browser-local configuration.
+- `triage-engine.js` implements the browser-only deterministic fallback.
 - `workflows/triage-request.json` implements the same contract in n8n.
 - `workflows/triage-request-ai.json` adds schema-validated Gemini classification and falls back to the baseline on model or parsing failure.
 - Both implementations return a category, priority, review decision, missing fields, retrieved procedure, and audit trail.
@@ -29,7 +26,7 @@ The browser is untrusted. It limits input length for usability, but the workflow
 
 The webhook URL is optional configuration stored in browser local storage. It is not present in source control. Synthetic procedures deliberately avoid private organizational data.
 
-GitHub Pages can host the static frontend directly from this repository. It has no access to `.env`, n8n state, or credentials. A live integration crosses from the public browser to a separately hosted HTTPS webhook; the browser retains control of whether that optional connection is used.
+GitHub Pages can host the static frontend directly from this repository. It has no access to `.env`, n8n state, or credentials. A live integration crosses from the public browser to a separately hosted HTTPS webhook. When that URL is absent or unreachable, the UI records its deterministic fallback in the returned audit trail.
 
 ## Evolution path
 

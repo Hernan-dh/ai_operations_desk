@@ -2,7 +2,7 @@
 
 An auditable request-triage demo for a small operations team. It classifies an incoming request, identifies missing information, retrieves the applicable internal procedure, and decides whether human review is required.
 
-The public frontend works without credentials in simulation mode. An importable n8n workflow implements the same request and response contract for a live integration.
+The n8n workflow is the primary integration and implements the request/response contract. The public browser page uses a deterministic engine only as a local fallback when no webhook is configured or the workflow cannot be reached.
 
 ## Run the demo
 
@@ -17,7 +17,7 @@ Open `http://127.0.0.1:4174`.
 ## Connect n8n
 
 1. Start n8n with `docker compose up -d` or use an existing instance.
-2. Import `workflows/triage-request.json` for the credential-free baseline.
+2. Import `workflows/triage-request-ai.json` for the primary n8n workflow, or `workflows/triage-request.json` for its credential-free baseline variant.
 3. Publish the workflow and copy its production webhook URL.
 4. In the demo, open **Connection**, select **n8n webhook**, and paste the URL.
 
@@ -43,7 +43,7 @@ http://localhost:5678/webhook/operations-desk-triage-ai
 
 The repository includes a GitHub Pages workflow. In GitHub, open **Settings** → **Pages**, select **GitHub Actions** as the source, and push the default branch. The Actions workflow deploys the static frontend automatically.
 
-The public demo starts in browser simulation mode, so it does not need API keys, n8n, or a backend. To connect a deployed page to the live AI workflow, use **Connection** and provide an HTTPS webhook URL. A public HTTPS page cannot call a local or plain-HTTP endpoint because browsers block mixed-content requests.
+The public demo is wired for an n8n connection. Provide an HTTPS webhook URL through **Connection** to use the live workflow. Without one, or if that workflow is unavailable, the page explicitly falls back to deterministic browser triage using synthetic data. A public HTTPS page cannot call a local or plain-HTTP endpoint because browsers block mixed-content requests.
 
 ## Portfolio evidence
 
@@ -69,7 +69,7 @@ Run without `--preview` to verify, stage, commit, and push after typing the expl
 ## Current scope
 
 - Three operational categories: access, billing, and technical support.
-- Deterministic, explainable baseline shared by the browser and n8n.
+- n8n as the primary orchestration path, with deterministic policy and browser fallback.
 - Synthetic procedures and examples only.
 - No persistence and no external side effects.
 - Gemini enrichment is available in a separate opt-in workflow; the RAG index, approval inbox, and evaluation dataset remain planned increments rather than simulated claims.
