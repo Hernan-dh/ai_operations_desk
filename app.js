@@ -2,16 +2,16 @@
 
 const translations = {
   en: {
-    connection: 'Connection', simulation: 'Fallback', live: 'n8n primary', eyebrow: 'N8N-ORCHESTRATED AUTOMATION / CASE 001', demoNotice: 'n8n is the primary integration. This page uses synthetic data and falls back locally only when the workflow is unavailable.',
-    title: 'Route an unstructured request through an actionable n8n workflow.', lede: 'n8n validates and routes the request, applies deterministic policy, and can enrich the case with Gemini. A local deterministic engine is retained only as a recoverable fallback.',
-    incoming: 'Incoming request', synthetic: 'Synthetic data only', requestLabel: 'What does the operations team need to resolve?', tryExample: 'Try an example', accessExample: 'Repository access', billingExample: 'Incorrect invoice', technicalExample: 'Service unavailable', analyze: 'Analyze request', caseAnalysis: 'Case analysis', empty: 'Submit a request to inspect its route, evidence, and decision.', processing: 'Validating and routing request…', category: 'Category', priority: 'Priority', review: 'Human review', engine: 'Decision engine', summary: 'Operational summary', nextAction: 'Next action', missing: 'Missing information', retrievedProcedure: 'Retrieved procedure', auditTrail: 'Audit trail', errorTitle: 'The request could not be processed.', boundedTitle: 'Bounded decisions', boundedText: 'Deterministic rules control sensitive actions and escalation.', evidenceTitle: 'Visible evidence', evidenceText: 'Every recommendation identifies its supporting procedure.', fallbackTitle: 'Graceful fallback', fallbackText: 'The local engine keeps the demo usable when n8n is unavailable.', connectionTitle: 'Workflow connection', simulationMode: 'Deterministic fallback', webhookMode: 'n8n workflow (primary)', webhookLabel: 'n8n production webhook URL', connectionHelp: 'The URL stays in this browser and is never included in the repository. If it is unavailable, the deterministic fallback keeps the demo usable.', save: 'Save connection', yes: 'Required', no: 'Not required', none: 'None',
+    connection: 'Connection', simulation: 'Managed n8n', live: 'Custom n8n', eyebrow: 'N8N-ORCHESTRATED AUTOMATION / CASE 001', demoNotice: 'Every request is processed by n8n. This page uses synthetic data.',
+    title: 'Route an unstructured request through an actionable n8n workflow.', lede: 'The application sends every request to n8n for validation, classification, procedure retrieval, and policy enforcement.',
+    incoming: 'Incoming request', synthetic: 'Synthetic data only', requestLabel: 'What does the operations team need to resolve?', tryExample: 'Try an example', accessExample: 'Repository access', billingExample: 'Incorrect invoice', technicalExample: 'Service unavailable', analyze: 'Analyze request', caseAnalysis: 'Case analysis', empty: 'Submit a request to inspect its route, evidence, and decision.', processing: 'Validating and routing request…', category: 'Category', priority: 'Priority', review: 'Human review', engine: 'Decision engine', summary: 'Operational summary', nextAction: 'Next action', missing: 'Missing information', retrievedProcedure: 'Retrieved procedure', auditTrail: 'Audit trail', errorTitle: 'The request could not be processed.', boundedTitle: 'Bounded decisions', boundedText: 'Deterministic rules control sensitive actions and escalation.', evidenceTitle: 'Visible evidence', evidenceText: 'Every recommendation identifies its supporting procedure.', fallbackTitle: 'Fail closed', fallbackText: 'If n8n is unavailable, no local decision is generated.', connectionTitle: 'n8n connection', simulationMode: 'Managed n8n via server', webhookMode: 'Custom n8n webhook', webhookLabel: 'n8n production webhook URL', connectionHelp: 'Both modes require n8n. The custom URL stays only in this browser.', save: 'Save connection', yes: 'Required', no: 'Not required', none: 'None',
     placeholder: 'Example: I cannot access the analytics repository and I need to deliver a change today.', useLocalAi: 'Use local AI workflow',
     examples: { access: 'I cannot access the analytics repository and I need to deliver a change today.', billing: 'Invoice INV-204 has an incorrect amount of USD 480.', technical: 'The client portal service is unavailable for the whole support team.' }
   },
   es: {
-    connection: 'Conexión', simulation: 'Fallback', live: 'n8n principal', eyebrow: 'AUTOMATIZACIÓN ORQUESTADA CON N8N / CASO 001', demoNotice: 'n8n es la integración principal. Esta página usa datos ficticios y aplica un fallback local sólo si el workflow no está disponible.',
-    title: 'Enrutá una solicitud desestructurada mediante un workflow accionable de n8n.', lede: 'n8n valida y enruta la solicitud, aplica una política determinista y puede enriquecer el caso con Gemini. Un motor determinista local queda sólo como fallback recuperable.',
-    incoming: 'Solicitud recibida', synthetic: 'Solo datos ficticios', requestLabel: '¿Qué necesita resolver el equipo de operaciones?', tryExample: 'Probar un ejemplo', accessExample: 'Acceso a repositorio', billingExample: 'Factura incorrecta', technicalExample: 'Servicio no disponible', analyze: 'Analizar solicitud', caseAnalysis: 'Análisis del caso', empty: 'Enviá una solicitud para inspeccionar su ruta, evidencia y decisión.', processing: 'Validando y enrutando la solicitud…', category: 'Categoría', priority: 'Prioridad', review: 'Revisión humana', engine: 'Motor de decisión', summary: 'Resumen operativo', nextAction: 'Próxima acción', missing: 'Información faltante', retrievedProcedure: 'Procedimiento recuperado', auditTrail: 'Registro de auditoría', errorTitle: 'No se pudo procesar la solicitud.', boundedTitle: 'Decisiones limitadas', boundedText: 'Las reglas deterministas controlan las acciones sensibles y el escalamiento.', evidenceTitle: 'Evidencia visible', evidenceText: 'Cada recomendación identifica el procedimiento que la fundamenta.', fallbackTitle: 'Fallback controlado', fallbackText: 'El motor local mantiene disponible la demo cuando n8n no responde.', connectionTitle: 'Conexión del workflow', simulationMode: 'Fallback determinista', webhookMode: 'Workflow de n8n (principal)', webhookLabel: 'URL del webhook de producción de n8n', connectionHelp: 'La URL permanece en este navegador y nunca se incluye en el repositorio. Si no está disponible, el fallback determinista mantiene utilizable la demo.', save: 'Guardar conexión', yes: 'Requerida', no: 'No requerida', none: 'Ninguna',
+    connection: 'Conexión', simulation: 'n8n administrado', live: 'n8n externo', eyebrow: 'AUTOMATIZACIÓN ORQUESTADA CON N8N / CASO 001', demoNotice: 'Todas las solicitudes son procesadas por n8n. Esta página usa datos ficticios.',
+    title: 'Enrutá una solicitud desestructurada mediante un workflow accionable de n8n.', lede: 'La aplicación envía cada solicitud a n8n para su validación, clasificación, recuperación de procedimientos y aplicación de políticas.',
+    incoming: 'Solicitud recibida', synthetic: 'Solo datos ficticios', requestLabel: '¿Qué necesita resolver el equipo de operaciones?', tryExample: 'Probar un ejemplo', accessExample: 'Acceso a repositorio', billingExample: 'Factura incorrecta', technicalExample: 'Servicio no disponible', analyze: 'Analizar solicitud', caseAnalysis: 'Análisis del caso', empty: 'Enviá una solicitud para inspeccionar su ruta, evidencia y decisión.', processing: 'Validando y enrutando la solicitud…', category: 'Categoría', priority: 'Prioridad', review: 'Revisión humana', engine: 'Motor de decisión', summary: 'Resumen operativo', nextAction: 'Próxima acción', missing: 'Información faltante', retrievedProcedure: 'Procedimiento recuperado', auditTrail: 'Registro de auditoría', errorTitle: 'No se pudo procesar la solicitud.', boundedTitle: 'Decisiones limitadas', boundedText: 'Las reglas deterministas controlan las acciones sensibles y el escalamiento.', evidenceTitle: 'Evidencia visible', evidenceText: 'Cada recomendación identifica el procedimiento que la fundamenta.', fallbackTitle: 'Fallo seguro', fallbackText: 'Si n8n no está disponible, no se genera ninguna decisión local.', connectionTitle: 'Conexión de n8n', simulationMode: 'n8n administrado vía servidor', webhookMode: 'Webhook personalizado de n8n', webhookLabel: 'URL del webhook de producción de n8n', connectionHelp: 'Ambos modos requieren n8n. La URL personalizada queda sólo en este navegador.', save: 'Guardar conexión', yes: 'Requerida', no: 'No requerida', none: 'Ninguna',
     placeholder: 'Ejemplo: No puedo acceder al repositorio de analítica y necesito entregar un cambio hoy.', useLocalAi: 'Usar workflow AI local',
     examples: { access: 'No puedo acceder al repositorio de analítica y necesito entregar un cambio hoy.', billing: 'La factura INV-204 tiene un importe incorrecto de USD 480.', technical: 'El servicio del portal de clientes no está disponible para todo el equipo de soporte.' }
   }
@@ -29,8 +29,8 @@ function applyTheme() {
 }
 
 function readConnection() {
-  try { return JSON.parse(localStorage.getItem('ops-connection')) || { mode: 'webhook', webhookUrl: '' }; }
-  catch { return { mode: 'webhook', webhookUrl: '' }; }
+  try { return JSON.parse(localStorage.getItem('ops-connection')) || { mode: 'server', webhookUrl: '' }; }
+  catch { return { mode: 'server', webhookUrl: '' }; }
 }
 
 function applyLanguage() {
@@ -51,25 +51,15 @@ function setView(view) {
   elements.resultPanel.setAttribute('aria-busy', view === 'loadingState' ? 'true' : 'false');
 }
 
-function analyzeWithFallback(request, reason) {
-  const result = window.TriageEngine.analyzeRequest(request);
-  result.engine = 'deterministic-browser-fallback-v1';
-  result.audit.push(reason || 'n8n webhook not configured; deterministic fallback applied');
-  return result;
-}
-
 async function analyze(request) {
-  if (connection.mode !== 'webhook' || !connection.webhookUrl) {
-    await new Promise((resolve) => setTimeout(resolve, 450));
-    return analyzeWithFallback(request);
-  }
+  const endpoint = connection.mode === 'webhook' && connection.webhookUrl ? connection.webhookUrl : '/api/triage';
   try {
-    const response = await fetch(connection.webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ request }) });
-    if (!response.ok) throw new Error(`n8n returned HTTP ${response.status}.`);
-    return response.json();
+    const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ request }) });
+    const body = await response.json();
+    if (!response.ok) throw new Error(body.error || `Service returned HTTP ${response.status}.`);
+    return body;
   } catch (error) {
-    console.warn('n8n unavailable; applying deterministic fallback.', error);
-    return analyzeWithFallback(request, 'n8n webhook unavailable; deterministic fallback applied');
+    throw error;
   }
 }
 

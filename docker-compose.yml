@@ -1,4 +1,17 @@
 services:
+  app:
+    build: .
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      PORT: 3000
+      HOST: 0.0.0.0
+      N8N_WEBHOOK_URL: http://n8n:5678/webhook/operations-desk-triage-ai
+    depends_on:
+      n8n:
+        condition: service_started
+    restart: unless-stopped
+
   n8n:
     image: docker.n8n.io/n8nio/n8n:latest
     ports:

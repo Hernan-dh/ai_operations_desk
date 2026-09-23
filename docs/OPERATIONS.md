@@ -1,12 +1,14 @@
 # Operations
 
-## Local frontend
+## Application server
 
-Run `python -m http.server 4174 --bind 127.0.0.1` from the repository root. Configure a published n8n webhook in **Connection** to exercise the primary path. Without one, the page uses its deterministic browser fallback with synthetic data.
+Run `npm start` from the repository root and open `http://127.0.0.1:3000`. The server binds to `0.0.0.0` by default; configure `HOST` and `PORT` when running without Docker. Confirm readiness with `GET /healthz`.
+
+For a container deployment, run `docker compose up -d --build`. This starts both the application and mandatory n8n service. Import `workflows/triage-request-ai.json`, assign the Gemini credential, test it, and publish it before accepting traffic. `APP_PORT` controls the application port and defaults to `3000`.
 
 ## Local n8n
 
-Copy `.env.example` to `.env`, replace `N8N_ENCRYPTION_KEY`, and run `docker compose up -d`. Open `http://127.0.0.1:5678`, import the workflow, and publish it. The local setting `N8N_SECURE_COOKIE=false` is only for HTTP development and must not be carried into an internet deployment.
+Copy `.env.example` to `.env`, replace `N8N_ENCRYPTION_KEY`, and run `docker compose up -d`. Open `http://127.0.0.1:5678`, import `workflows/triage-request-ai.json`, configure **Gemini classifier**, execute a test, and publish it. The application proxy targets `/webhook/operations-desk-triage-ai` by default. The local setting `N8N_SECURE_COOKIE=false` is only for HTTP development.
 
 The `.n8n` directory contains local state and is ignored. Back it up before recreating the container. Export material workflows into `workflows/`; credentials must never be included.
 
@@ -28,7 +30,7 @@ Deploy the static frontend on any static host. For the intended live integration
 
 The versioned workflow `.github/workflows/deploy-pages.yml` deploys the repository root after a push to `main` and can also be run manually. Once, in the GitHub repository settings, set **Pages** → **Build and deployment** → **Source** to **GitHub Actions**. The generated deployment URL appears in the workflow summary.
 
-Pages hosts only static files and intentionally has no access to `.env` or n8n credentials. The browser fallback is safe to publish, but a configured n8n webhook is the primary integration. A live webhook used from Pages must use HTTPS and must allow the Pages site origin through CORS; never configure it with a wildcard origin when authentication is later added.
+GitHub Pages alone is not a functional deployment because n8n is mandatory. If the frontend is published separately, its n8n route must use HTTPS and allow only the frontend origin through CORS. Credentials must remain inside n8n.
 
 ## Verification
 
@@ -52,4 +54,4 @@ Repository diffs and new text-file excerpts are sent to the selected external mo
 
 ## Recovery
 
-If the n8n webhook is unavailable, the page automatically applies the deterministic browser fallback and records that condition in its audit trail. It can also be selected explicitly in the Connection dialog. If browser configuration becomes invalid, clear the `ops-connection` local-storage entry. The public demo does not require stored execution data to recover.
+If n8n or its published workflow is unavailable, triage returns an error and no local decision is generated. Restore the n8n service and verify the production webhook before retrying. Clear `ops-connection` in browser local storage to return from a custom n8n URL to the server-managed n8n route.

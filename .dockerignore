@@ -1,0 +1,11 @@
+.git
+.github
+.n8n
+.env
+node_modules
+coverage
+tests
+docs
+scripts
+workflows
+*.log

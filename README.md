@@ -1,23 +1,33 @@
 # AI Operations Desk
 
-An auditable request-triage demo for a small operations team. It classifies an incoming request, identifies missing information, retrieves the applicable internal procedure, and decides whether human review is required.
+An auditable, deployable request-triage application for a small operations team. It classifies an incoming request, identifies missing information, retrieves the applicable internal procedure, and decides whether human review is required.
 
-The n8n workflow is the primary integration and implements the request/response contract. The public browser page uses a deterministic engine only as a local fallback when no webhook is configured or the workflow cannot be reached.
+The Node.js server hosts the browser interface and proxies every triage request to the AI workflow in n8n. n8n is mandatory: the application fails closed when the workflow is unavailable. Gemini proposes classification and summary fields; schema validation and deterministic policy constrain the final decision.
 
-## Run the demo
+The project demonstrates a production-minded combination of APIs and webhooks, n8n self-hosting, LLM integration, prompt engineering, structured output, guarded automation, error handling, and containerized deployment.
 
-Python 3 and Node.js 20+ are sufficient.
+## Run locally
+
+Node.js 20+ and a running, published n8n workflow are required. No npm package installation is needed.
 
 ```powershell
-python -m http.server 4174 --bind 127.0.0.1
+npm start
 ```
 
-Open `http://127.0.0.1:4174`.
+Set `N8N_WEBHOOK_URL` to the published workflow URL, then open `http://127.0.0.1:3000`. Health is available at `GET /healthz`; triage is available at `POST /api/triage` with `{ "request": "..." }`.
+
+## Run on a server
+
+```powershell
+docker compose up -d --build
+```
+
+Compose starts both the application and n8n. The application is exposed on port `3000` and n8n on `5678`. Import and publish `workflows/triage-request-ai.json`, configure its Gemini credential, and test it before submitting requests. Set `APP_PORT` in `.env` to change the application port.
 
 ## Connect n8n
 
 1. Start n8n with `docker compose up -d` or use an existing instance.
-2. Import `workflows/triage-request-ai.json` for the primary n8n workflow, or `workflows/triage-request.json` for its credential-free baseline variant.
+2. Import `workflows/triage-request-ai.json` as the required application workflow. `workflows/triage-request.json` is retained as the credential-free deterministic baseline.
 3. Publish the workflow and copy its production webhook URL.
 4. In the demo, open **Connection**, select **n8n webhook**, and paste the URL.
 
@@ -47,7 +57,7 @@ The public demo is wired for an n8n connection. Provide an HTTPS webhook URL thr
 
 ## Portfolio evidence
 
-The public page is intentionally transparent about using synthetic data and simulation by default. Pair it with the versioned AI workflow and a short local-execution recording to demonstrate the real Gemini integration without exposing a permanent public webhook. See [portfolio evidence](docs/PORTFOLIO.md) for a capture checklist, video outline, and suggested project description.
+The application is intentionally transparent about using synthetic data and requiring the versioned AI workflow. Pair it with a short n8n execution recording to demonstrate the Gemini integration without exposing credentials. See [portfolio evidence](docs/PORTFOLIO.md) for a capture checklist, video outline, and suggested project description.
 
 ## Verify
 
@@ -69,7 +79,7 @@ Run without `--preview` to verify, stage, commit, and push after typing the expl
 ## Current scope
 
 - Three operational categories: access, billing, and technical support.
-- n8n as the primary orchestration path, with deterministic policy and browser fallback.
+- n8n AI workflow as the mandatory orchestration path, with deterministic post-model policy.
 - Synthetic procedures and examples only.
 - No persistence and no external side effects.
 - Gemini enrichment is available in a separate opt-in workflow; the RAG index, approval inbox, and evaluation dataset remain planned increments rather than simulated claims.

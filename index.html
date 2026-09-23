@@ -82,7 +82,7 @@
     <form method="dialog" id="connectionForm">
       <div class="dialog-heading"><h2 data-i18n="connectionTitle">Connection</h2><button value="cancel" aria-label="Close">×</button></div>
       <label><input type="radio" name="mode" value="webhook" checked> <span data-i18n="webhookMode">n8n workflow (primary)</span></label>
-      <label><input type="radio" name="mode" value="simulation"> <span data-i18n="simulationMode">Deterministic fallback</span></label>
+      <label><input type="radio" name="mode" value="server"> <span data-i18n="simulationMode">Managed n8n via server</span></label>
       <label for="webhookUrl" data-i18n="webhookLabel">n8n production webhook URL</label>
       <input id="webhookUrl" name="webhookUrl" type="url" placeholder="https://…/webhook/operations-desk-triage-ai">
       <p data-i18n="connectionHelp">The URL stays in this browser and is never included in the repository.</p>
@@ -91,7 +91,6 @@
     </form>
   </dialog>
 
-  <script src="triage-engine.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

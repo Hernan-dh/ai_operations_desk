@@ -1,6 +1,6 @@
 # Roadmap
 
-## Increment 1 — baseline (current)
+## Increment 1 — deterministic baseline
 
 - Bilingual public interface.
 - Explainable deterministic routing.
@@ -8,9 +8,11 @@
 - n8n webhook with the same response contract.
 - No-cost simulation fallback.
 
-## Increment 2 — AI enrichment (implemented, pending credentialed test)
+## Increment 2 — AI orchestration MVP (implemented, pending credentialed test)
 
-- [x] Add an optional LLM classifier with structured output.
+- [x] Make the n8n AI workflow the required application path.
+- [x] Add an LLM classifier with structured output.
+- [x] Fail closed when n8n is unavailable.
 - [x] Keep deterministic approval and input-validation policies.
 - [x] Record the selected engine or fallback in the audit event.
 - [x] Keep missing-information requirements deterministic after observing model overreach in an integration test.
