@@ -22,7 +22,9 @@ Set `N8N_WEBHOOK_URL` to the published workflow URL, then open `http://127.0.0.1
 docker compose up -d --build
 ```
 
-Compose starts both the application and n8n. The application is exposed on port `3000` and n8n on `5678`. Import and publish `workflows/triage-request-ai.json`, configure its Gemini credential, and test it before submitting requests. Set `APP_PORT` in `.env` to change the application port.
+Compose starts both the application and n8n. The application binds to host loopback port `3002` by default so it can coexist with Ticketing on `3001`; n8n binds to loopback port `5678`. Import and publish `workflows/triage-request-ai.json`, configure its Gemini credential, and test it before submitting requests.
+
+For deployment beside Ticketing on the Netcup server, follow [Netcup deployment](docs/NETCUP_DEPLOYMENT.md).
 
 ## Connect n8n
 

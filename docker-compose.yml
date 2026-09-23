@@ -2,11 +2,12 @@ services:
   app:
     build: .
     ports:
-      - "${APP_PORT:-3000}:3000"
+      - "127.0.0.1:${APP_PORT:-3002}:3000"
     environment:
       PORT: 3000
       HOST: 0.0.0.0
       N8N_WEBHOOK_URL: http://n8n:5678/webhook/operations-desk-triage-ai
+      N8N_TIMEOUT_MS: ${N8N_TIMEOUT_MS:-45000}
     depends_on:
       n8n:
         condition: service_started
@@ -15,12 +16,14 @@ services:
   n8n:
     image: docker.n8n.io/n8nio/n8n:latest
     ports:
-      - "5678:5678"
+      - "127.0.0.1:${N8N_PORT:-5678}:5678"
     environment:
       N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
       GENERIC_TIMEZONE: ${GENERIC_TIMEZONE:-America/Argentina/Buenos_Aires}
       TZ: ${GENERIC_TIMEZONE:-America/Argentina/Buenos_Aires}
-      N8N_SECURE_COOKIE: "false"
+      N8N_SECURE_COOKIE: ${N8N_SECURE_COOKIE:-false}
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_PERSONALIZATION_ENABLED: "false"
     volumes:
       - ./.n8n:/home/node/.n8n
     restart: unless-stopped

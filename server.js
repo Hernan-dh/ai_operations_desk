@@ -41,6 +41,7 @@ async function readJson(request) {
 
 function createServer(options = {}) {
   const n8nWebhookUrl = options.n8nWebhookUrl || process.env.N8N_WEBHOOK_URL || 'http://n8n:5678/webhook/operations-desk-triage-ai';
+  const n8nTimeoutMs = options.n8nTimeoutMs || Number.parseInt(process.env.N8N_TIMEOUT_MS || '45000', 10);
   return http.createServer(async (request, response) => {
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'no-referrer');
@@ -60,7 +61,7 @@ function createServer(options = {}) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ request: body.request.trim() }),
-          signal: AbortSignal.timeout(15000),
+          signal: AbortSignal.timeout(n8nTimeoutMs),
         });
         const raw = await upstream.text();
         let result;
