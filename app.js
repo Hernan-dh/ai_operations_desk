@@ -8,7 +8,8 @@ const examples = {
   en:{access:'I cannot access the analytics repository and I need to deliver a change today.',billing:'Invoice INV-204 has an incorrect amount of USD 480.',technical:'The client portal service is unavailable for the whole support team.'},
   es:{access:'No puedo acceder al repositorio de analítica y necesito entregar un cambio hoy.',billing:'La factura INV-204 tiene un importe incorrecto de USD 480.',technical:'El servicio del portal de clientes no está disponible para todo el equipo de soporte.'}
 };
-let language=localStorage.getItem('ops-language')||'en', theme=localStorage.getItem('ops-theme')||(matchMedia?.('(prefers-color-scheme: dark)').matches?'dark':'light');
+const savedLanguage=localStorage.getItem('ops-language');
+let language=savedLanguage==='es'||savedLanguage==='en'?savedLanguage:((navigator.language||'').toLowerCase().startsWith('es')?'es':'en'), theme=localStorage.getItem('ops-theme')||(matchMedia?.('(prefers-color-scheme: dark)').matches?'dark':'light');
 let operatorKey=sessionStorage.getItem('ops-operator-key')||'', currentFilter='all';
 const ids=['triageForm','requestText','resultPanel','emptyState','loadingState','resultContent','errorState','errorMessage','caseId','category','priority','review','engine','summary','nextAction','missing','sourceTitle','sourceExcerpt','sourceId','auditTrail','themeButton','languageButton','connectionButton','modeLabel','queueSection','operatorForm','operatorKey','queueContent','caseList','queueMessage','refreshCases','filterAll','filterPending'];
 const el=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
