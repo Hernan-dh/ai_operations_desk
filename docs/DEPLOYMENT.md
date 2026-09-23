@@ -28,6 +28,9 @@ Generate strong, distinct values for:
 - `CASE_DB_PASSWORD`
 - `OPERATOR_KEY`
 
+Set `N8N_SECURE_COOKIE=true` for the HTTPS deployment. `false` is reserved for
+the local HTTP setup described in Operations.
+
 Keep protected recovery copies. Losing or changing the n8n encryption key makes stored credentials unreadable. Never reuse secrets across environments or commit `.env`.
 
 ## Start

@@ -30,13 +30,18 @@ When the static demo runs locally on `http://127.0.0.1:4174`, open **Connection*
 
 ## Public deployment
 
-Deploy the complete application, PostgreSQL, and n8n stack behind HTTPS. Add reverse-proxy rate limiting, keep durable volumes, set strong distinct secrets, and restrict editor access. Never expose the n8n editor through an iframe.
+Deploy the complete application, PostgreSQL, and n8n stack behind HTTPS. Set
+`N8N_SECURE_COOKIE=true`, add reverse-proxy rate limiting, keep durable volumes,
+set strong distinct secrets, and restrict editor access. Never expose the n8n
+editor through an iframe.
 
-### GitHub Pages
+### Static preview only
 
-The versioned workflow `.github/workflows/deploy-pages.yml` deploys the repository root after a push to `main` and can also be run manually. Once, in the GitHub repository settings, set **Pages** → **Build and deployment** → **Source** to **GitHub Actions**. The generated deployment URL appears in the workflow summary.
-
-GitHub Pages alone is not a functional deployment because n8n is mandatory. If the frontend is published separately, its n8n route must use HTTPS and allow only the frontend origin through CORS. Credentials must remain inside n8n.
+The versioned workflow `.github/workflows/deploy-pages.yml` may publish the
+repository root as a visual preview. It is not a functional deployment because
+n8n is mandatory. If a frontend is published separately, its n8n route must use
+HTTPS and allow only the frontend origin through CORS. Credentials must remain
+inside n8n.
 
 ## Verification
 
