@@ -14,17 +14,26 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_GEMINI_MODELS = ("gemini-3.7-flash", "gemini-3.5-flash", "gemini-3.1-flash-lite")
+DEFAULT_GEMINI_MODELS = (
+    "gemini-3.5-flash",
+    "gemini-3.7-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
+)
 GEMINI_THINKING_LEVELS = {
+    "gemini-3.8-flash": "low",
     "gemini-3.7-flash": "low",
+    "gemini-3.6-flash": "low",
     "gemini-3.5-flash": "minimal",
+    "gemini-3.5-flash-lite": "minimal",
     "gemini-3.1-flash-lite": "low",
 }
 DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b"
 DEFAULT_OPENROUTER_MODELS = (
-    "openrouter/free",
+    "nvidia/nemotron-3.5-lightning:free",
 )
-DEFAULT_REQUEST_TIMEOUT = 45
+OPENROUTER_FALLBACK_MODEL = "openrouter/free"
+DEFAULT_REQUEST_TIMEOUT = 15
 MAX_CHANGE_CONTEXT = 24_000
 USER_AGENT = "ai-operations-desk-publish/1.0"
 COMMIT_TITLE_PATTERN = re.compile(
@@ -202,6 +211,8 @@ def generate_openai_compatible(
         "response_format": {"type": "json_object"},
         **(extra_payload or {}),
     }
+    if "openrouter.ai" in base_url and model.startswith("nvidia/nemotron-"):
+        payload.pop("response_format")
     response = post_json(
         f"{base_url.rstrip('/')}/chat/completions",
         {
@@ -237,9 +248,10 @@ def configured_attempts(prompt: str, timeout: int) -> list[tuple[str, Callable[[
         "OPENROUTER_COMMIT_MODELS",
         os.getenv("OPENROUTER_COMMIT_MODEL", os.getenv("OPENROUTER_MODEL", "")),
     )
-    openrouter_models = tuple(item.strip() for item in configured_openrouter.split(",") if item.strip()) or DEFAULT_OPENROUTER_MODELS
-    if configured_openrouter and "openrouter/free" not in openrouter_models:
-        openrouter_models = (*openrouter_models, "openrouter/free")
+    selected_openrouter_models = tuple(item.strip() for item in configured_openrouter.split(",") if item.strip()) or DEFAULT_OPENROUTER_MODELS
+    openrouter_models = selected_openrouter_models
+    if OPENROUTER_FALLBACK_MODEL not in openrouter_models:
+        openrouter_models += (OPENROUTER_FALLBACK_MODEL,)
     if openrouter_key:
         base_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1").strip()
         site_url = os.getenv("OPENROUTER_SITE_URL", "").strip()
