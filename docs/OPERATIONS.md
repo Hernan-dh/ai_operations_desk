@@ -4,6 +4,10 @@
 
 `N8N_TIMEOUT_MS` controls how long the application waits for the n8n AI workflow and defaults to 45 seconds. Keep the reverse-proxy upstream timeout above this value so slower model responses can complete.
 
+`CASE_DB_PASSWORD` and `OPERATOR_KEY` are mandatory production secrets. `RATE_LIMIT_PER_MINUTE` defaults to 60 requests per client IP. The development fallbacks in Compose are only for local testing; never use them on Netcup.
+
+Application logs are newline-delimited JSON. `case_created`, `case_decided`, `request_failed`, and `rate_limit_exceeded` include `requestId` for correlation. Request contents and credentials are not logged.
+
 Run `npm start` from the repository root and open `http://127.0.0.1:3000`. The server binds to `0.0.0.0` by default; configure `HOST` and `PORT` when running without Docker. Confirm readiness with `GET /healthz`.
 
 For a container deployment, run `docker compose up -d --build`. This starts both the application and mandatory n8n service. Import `workflows/triage-request-ai.json`, assign the Gemini credential, test it, and publish it before accepting traffic. `APP_PORT` controls the loopback application port and defaults to `3002`; this avoids Ticketing's port `3001` on the shared Netcup host. See [Netcup deployment](NETCUP_DEPLOYMENT.md).
@@ -26,7 +30,7 @@ When the static demo runs locally on `http://127.0.0.1:4174`, open **Connection*
 
 ## Public deployment
 
-Deploy the static frontend on any static host. For the intended live integration, deploy n8n behind HTTPS, add reverse-proxy rate limiting, configure a durable volume, set a strong encryption key, and restrict editor access. Never expose the n8n editor through an iframe. The static deterministic path remains available only as a recoverable fallback.
+Deploy the complete application, PostgreSQL, and n8n stack behind HTTPS. Add reverse-proxy rate limiting, keep durable volumes, set strong distinct secrets, and restrict editor access. Never expose the n8n editor through an iframe.
 
 ### GitHub Pages
 

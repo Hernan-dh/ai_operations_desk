@@ -1,6 +1,6 @@
 # AI Operations Desk
 
-An auditable, deployable request-triage application for a small operations team. It classifies an incoming request, identifies missing information, retrieves the applicable internal procedure, and decides whether human review is required.
+An auditable, deployable request-triage application for a small operations team. It classifies incoming requests, persists cases in PostgreSQL, identifies missing information, retrieves the applicable procedure, and provides an operator queue for approval or rejection.
 
 The Node.js server hosts the browser interface and proxies every triage request to the AI workflow in n8n. n8n is mandatory: the application fails closed when the workflow is unavailable. Gemini proposes classification and summary fields; schema validation and deterministic policy constrain the final decision.
 
@@ -8,13 +8,13 @@ The project demonstrates a production-minded combination of APIs and webhooks, n
 
 ## Run locally
 
-Node.js 20+ and a running, published n8n workflow are required. No npm package installation is needed.
+Node.js 20+, PostgreSQL, and a running published n8n workflow are required. For ordinary local use, Docker Compose is the supported path.
 
 ```powershell
 npm start
 ```
 
-Set `N8N_WEBHOOK_URL` to the published workflow URL, then open `http://127.0.0.1:3000`. Health is available at `GET /healthz`; triage is available at `POST /api/triage` with `{ "request": "..." }`.
+When running without Docker, set `DATABASE_URL`, `OPERATOR_KEY`, and `N8N_WEBHOOK_URL`, then open `http://127.0.0.1:3000`.
 
 ## Run on a server
 
@@ -22,7 +22,7 @@ Set `N8N_WEBHOOK_URL` to the published workflow URL, then open `http://127.0.0.1
 docker compose up -d --build
 ```
 
-Compose starts both the application and n8n. The application binds to host loopback port `3002` by default so it can coexist with Ticketing on `3001`; n8n binds to loopback port `5678`. Import and publish `workflows/triage-request-ai.json`, configure its Gemini credential, and test it before submitting requests.
+Compose starts the application, PostgreSQL, and n8n. The application binds to host loopback port `3002` by default so it can coexist with Ticketing on `3001`; n8n binds to loopback port `5678`. Import and publish `workflows/triage-request-ai.json`, configure its Gemini credential, and test it before submitting requests. Use `OPERATOR_KEY` to open the operations queue.
 
 For deployment beside Ticketing on the Netcup server, follow [Netcup deployment](docs/NETCUP_DEPLOYMENT.md).
 
@@ -51,11 +51,9 @@ For the local demo, use **Connection** → **Use local AI workflow**. The button
 http://localhost:5678/webhook/operations-desk-triage-ai
 ```
 
-## Publish the static demo
+## Deployment
 
-The repository includes a GitHub Pages workflow. In GitHub, open **Settings** → **Pages**, select **GitHub Actions** as the source, and push the default branch. The Actions workflow deploys the static frontend automatically.
-
-The public demo is wired for an n8n connection. Provide an HTTPS webhook URL through **Connection** to use the live workflow. Without one, or if that workflow is unavailable, the page explicitly falls back to deterministic browser triage using synthetic data. A public HTTPS page cannot call a local or plain-HTTP endpoint because browsers block mixed-content requests.
+The frontend requires its same-origin API, PostgreSQL, and n8n; static-only GitHub Pages hosting is not functional. Deploy the complete Compose stack behind HTTPS.
 
 ## Portfolio evidence
 
@@ -67,6 +65,15 @@ The application is intentionally transparent about using synthetic data and requ
 node --test tests/*.test.cjs
 python scripts/verify.py
 ```
+
+## Case API
+
+- `POST /api/triage` analyzes and persists a case.
+- `GET /api/cases?status=pending_review` lists cases and requires `X-Operator-Key`.
+- `POST /api/cases/:id/decision` accepts `approve` or `reject` and requires `X-Operator-Key`.
+- `GET /healthz` verifies application and database readiness.
+
+Requests are rate limited per client IP. Application logs are structured JSON and include a correlation request ID without logging request bodies or credentials.
 
 ## Publish changes
 
@@ -83,7 +90,7 @@ Run without `--preview` to verify, stage, commit, and push after typing the expl
 - Three operational categories: access, billing, and technical support.
 - n8n AI workflow as the mandatory orchestration path, with deterministic post-model policy.
 - Synthetic procedures and examples only.
-- No persistence and no external side effects.
-- Gemini enrichment is available in a separate opt-in workflow; the RAG index, approval inbox, and evaluation dataset remain planned increments rather than simulated claims.
+- PostgreSQL persistence with an operator approval/rejection lifecycle.
+- Gemini classification is the primary workflow. The RAG index and evaluation dataset remain planned increments rather than simulated claims.
 
 See [architecture](docs/ARCHITECTURE.md), [operations](docs/OPERATIONS.md), and the [roadmap](docs/ROADMAP.md).

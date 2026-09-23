@@ -6,7 +6,7 @@
 - Explainable deterministic routing.
 - Synthetic procedure retrieval.
 - n8n webhook with the same response contract.
-- No-cost simulation fallback.
+- Credential-free baseline workflow for diagnostics.
 
 ## Increment 2 — AI orchestration MVP (implemented, pending credentialed test)
 
@@ -26,10 +26,13 @@
 - Return chunk-level citations and reject unsupported answers.
 - Test retrieval separately from answer generation.
 
-## Increment 4 — case lifecycle
+## Increment 4 — case lifecycle (implemented MVP)
 
-- Persist cases and append-only events.
-- Add reviewer approval and rejection links.
+- [x] Persist cases and decisions in PostgreSQL.
+- [x] Add an operator queue with approval and rejection.
+- [x] Add structured logs and per-IP rate limiting.
+- [ ] Replace the shared operator key with users and roles.
+- [ ] Add append-only case events.
 - Add SLA timers and anonymized operational metrics.
 - Keep all connectors in a sandbox or mock tenant for the public demo.
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AI Operations Desk: n8n-orchestrated, auditable operational request triage with a deterministic fallback.">
+  <meta name="description" content="AI Operations Desk: n8n-orchestrated request triage with persistent cases and human approval.">
   <title>AI Operations Desk</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,8 +17,8 @@
     <div class="top-actions">
       <button id="themeButton" class="text-button theme-button" type="button" aria-label="Change color theme" aria-pressed="false">◐</button>
       <button id="languageButton" class="text-button" type="button" aria-label="Change language">ES</button>
-      <button id="connectionButton" class="text-button" type="button" data-i18n="connection">Connection</button>
-      <span class="status"><span class="status-dot"></span><span id="modeLabel">Fallback</span></span>
+      <button id="connectionButton" class="text-button" type="button" data-i18n="connection">Operations</button>
+      <span class="status"><span class="status-dot"></span><span id="modeLabel" data-i18n="simulation">n8n connected</span></span>
     </div>
   </header>
 
@@ -26,8 +26,8 @@
     <section class="hero">
       <p class="eyebrow" data-i18n="eyebrow">AUDITABLE AUTOMATION / CASE 001</p>
       <h1 data-i18n="title">Route an unstructured request through an actionable n8n workflow.</h1>
-      <p class="lede" data-i18n="lede">n8n validates and routes the request, applies deterministic policy, and can enrich the case with Gemini. A local deterministic engine is retained only as a recoverable fallback.</p>
-      <p class="demo-notice"><span aria-hidden="true">●</span> <span data-i18n="demoNotice">Public demo uses synthetic data and browser simulation by default.</span></p>
+      <p class="lede" data-i18n="lede">n8n and Gemini classify each request; deterministic policy controls escalation and operators retain the final decision.</p>
+      <p class="demo-notice"><span aria-hidden="true">●</span> <span data-i18n="demoNotice">Cases are processed by n8n and stored for operational review.</span></p>
     </section>
 
     <section class="workspace" aria-label="Request triage workspace">
@@ -71,25 +71,30 @@
       </section>
     </section>
 
+    <section id="queueSection" class="queue-section">
+      <div class="panel-heading"><div><span>03</span><h2 data-i18n="queue">Operations queue</h2></div></div>
+      <form id="operatorForm" class="operator-form">
+        <label for="operatorKey" data-i18n="operatorKey">Operator key</label>
+        <input id="operatorKey" type="password" autocomplete="current-password" required>
+        <button class="secondary-button" type="submit" data-i18n="unlock">Open queue</button>
+      </form>
+      <p id="queueMessage" class="queue-message" aria-live="polite"></p>
+      <div id="queueContent" hidden>
+        <div class="queue-toolbar">
+          <button id="filterPending" type="button" data-i18n="pending">Pending</button>
+          <button id="filterAll" type="button" data-i18n="all">All</button>
+          <button id="refreshCases" type="button" data-i18n="refresh">Refresh</button>
+        </div>
+        <div id="caseList" class="case-list"></div>
+      </div>
+    </section>
+
     <section class="principles">
       <article><span>01</span><h3 data-i18n="boundedTitle">Bounded decisions</h3><p data-i18n="boundedText">Deterministic rules control sensitive actions and escalation.</p></article>
       <article><span>02</span><h3 data-i18n="evidenceTitle">Visible evidence</h3><p data-i18n="evidenceText">Every recommendation identifies its supporting procedure.</p></article>
-      <article><span>03</span><h3 data-i18n="fallbackTitle">Graceful fallback</h3><p data-i18n="fallbackText">The workflow remains useful when an AI provider is unavailable.</p></article>
+      <article><span>03</span><h3 data-i18n="fallbackTitle">Operational control</h3><p data-i18n="fallbackText">Cases requiring review remain pending until an operator decides.</p></article>
     </section>
   </main>
-
-  <dialog id="connectionDialog">
-    <form method="dialog" id="connectionForm">
-      <div class="dialog-heading"><h2 data-i18n="connectionTitle">Connection</h2><button value="cancel" aria-label="Close">×</button></div>
-      <label><input type="radio" name="mode" value="webhook" checked> <span data-i18n="webhookMode">n8n workflow (primary)</span></label>
-      <label><input type="radio" name="mode" value="server"> <span data-i18n="simulationMode">Managed n8n via server</span></label>
-      <label for="webhookUrl" data-i18n="webhookLabel">n8n production webhook URL</label>
-      <input id="webhookUrl" name="webhookUrl" type="url" placeholder="https://…/webhook/operations-desk-triage-ai">
-      <p data-i18n="connectionHelp">The URL stays in this browser and is never included in the repository.</p>
-      <button id="useLocalAiButton" class="secondary-button" type="button" data-i18n="useLocalAi">Use local AI workflow</button>
-      <button class="primary-button" value="save" data-i18n="save">Save connection</button>
-    </form>
-  </dialog>
 
   <script src="app.js"></script>
 </body>

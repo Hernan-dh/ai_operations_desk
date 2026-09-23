@@ -1,108 +1,29 @@
 'use strict';
 
-const translations = {
-  en: {
-    connection: 'Connection', simulation: 'Managed n8n', live: 'Custom n8n', eyebrow: 'N8N-ORCHESTRATED AUTOMATION / CASE 001', demoNotice: 'Every request is processed by n8n. This page uses synthetic data.',
-    title: 'Route an unstructured request through an actionable n8n workflow.', lede: 'The application sends every request to n8n for validation, classification, procedure retrieval, and policy enforcement.',
-    incoming: 'Incoming request', synthetic: 'Synthetic data only', requestLabel: 'What does the operations team need to resolve?', tryExample: 'Try an example', accessExample: 'Repository access', billingExample: 'Incorrect invoice', technicalExample: 'Service unavailable', analyze: 'Analyze request', caseAnalysis: 'Case analysis', empty: 'Submit a request to inspect its route, evidence, and decision.', processing: 'Validating and routing request…', category: 'Category', priority: 'Priority', review: 'Human review', engine: 'Decision engine', summary: 'Operational summary', nextAction: 'Next action', missing: 'Missing information', retrievedProcedure: 'Retrieved procedure', auditTrail: 'Audit trail', errorTitle: 'The request could not be processed.', boundedTitle: 'Bounded decisions', boundedText: 'Deterministic rules control sensitive actions and escalation.', evidenceTitle: 'Visible evidence', evidenceText: 'Every recommendation identifies its supporting procedure.', fallbackTitle: 'Fail closed', fallbackText: 'If n8n is unavailable, no local decision is generated.', connectionTitle: 'n8n connection', simulationMode: 'Managed n8n via server', webhookMode: 'Custom n8n webhook', webhookLabel: 'n8n production webhook URL', connectionHelp: 'Both modes require n8n. The custom URL stays only in this browser.', save: 'Save connection', yes: 'Required', no: 'Not required', none: 'None',
-    placeholder: 'Example: I cannot access the analytics repository and I need to deliver a change today.', useLocalAi: 'Use local AI workflow',
-    examples: { access: 'I cannot access the analytics repository and I need to deliver a change today.', billing: 'Invoice INV-204 has an incorrect amount of USD 480.', technical: 'The client portal service is unavailable for the whole support team.' }
-  },
-  es: {
-    connection: 'Conexión', simulation: 'n8n administrado', live: 'n8n externo', eyebrow: 'AUTOMATIZACIÓN ORQUESTADA CON N8N / CASO 001', demoNotice: 'Todas las solicitudes son procesadas por n8n. Esta página usa datos ficticios.',
-    title: 'Enrutá una solicitud desestructurada mediante un workflow accionable de n8n.', lede: 'La aplicación envía cada solicitud a n8n para su validación, clasificación, recuperación de procedimientos y aplicación de políticas.',
-    incoming: 'Solicitud recibida', synthetic: 'Solo datos ficticios', requestLabel: '¿Qué necesita resolver el equipo de operaciones?', tryExample: 'Probar un ejemplo', accessExample: 'Acceso a repositorio', billingExample: 'Factura incorrecta', technicalExample: 'Servicio no disponible', analyze: 'Analizar solicitud', caseAnalysis: 'Análisis del caso', empty: 'Enviá una solicitud para inspeccionar su ruta, evidencia y decisión.', processing: 'Validando y enrutando la solicitud…', category: 'Categoría', priority: 'Prioridad', review: 'Revisión humana', engine: 'Motor de decisión', summary: 'Resumen operativo', nextAction: 'Próxima acción', missing: 'Información faltante', retrievedProcedure: 'Procedimiento recuperado', auditTrail: 'Registro de auditoría', errorTitle: 'No se pudo procesar la solicitud.', boundedTitle: 'Decisiones limitadas', boundedText: 'Las reglas deterministas controlan las acciones sensibles y el escalamiento.', evidenceTitle: 'Evidencia visible', evidenceText: 'Cada recomendación identifica el procedimiento que la fundamenta.', fallbackTitle: 'Fallo seguro', fallbackText: 'Si n8n no está disponible, no se genera ninguna decisión local.', connectionTitle: 'Conexión de n8n', simulationMode: 'n8n administrado vía servidor', webhookMode: 'Webhook personalizado de n8n', webhookLabel: 'URL del webhook de producción de n8n', connectionHelp: 'Ambos modos requieren n8n. La URL personalizada queda sólo en este navegador.', save: 'Guardar conexión', yes: 'Requerida', no: 'No requerida', none: 'Ninguna',
-    placeholder: 'Ejemplo: No puedo acceder al repositorio de analítica y necesito entregar un cambio hoy.', useLocalAi: 'Usar workflow AI local',
-    examples: { access: 'No puedo acceder al repositorio de analítica y necesito entregar un cambio hoy.', billing: 'La factura INV-204 tiene un importe incorrecto de USD 480.', technical: 'El servicio del portal de clientes no está disponible para todo el equipo de soporte.' }
-  }
+const copy = {
+  en: { connection:'Operations', simulation:'n8n connected', eyebrow:'N8N-ORCHESTRATED OPERATIONS', demoNotice:'Cases are processed by n8n and stored for operational review.', title:'Turn unstructured requests into accountable operations cases.', lede:'n8n and Gemini classify each request; deterministic policy controls escalation and operators retain the final decision.', incoming:'Incoming request', synthetic:'Synthetic data only', requestLabel:'What does the operations team need to resolve?', tryExample:'Try an example', accessExample:'Repository access', billingExample:'Incorrect invoice', technicalExample:'Service unavailable', analyze:'Create case', caseAnalysis:'Case analysis', empty:'Submit a request to create and inspect a case.', processing:'Creating case…', category:'Category', priority:'Priority', review:'Human review', engine:'Decision engine', summary:'Operational summary', nextAction:'Next action', missing:'Missing information', retrievedProcedure:'Retrieved procedure', auditTrail:'Audit trail', errorTitle:'The request could not be processed.', boundedTitle:'Bounded decisions', boundedText:'Deterministic rules control sensitive actions and escalation.', evidenceTitle:'Visible evidence', evidenceText:'Every recommendation identifies its supporting procedure.', fallbackTitle:'Operational control', fallbackText:'Cases requiring review remain pending until an operator decides.', yes:'Required', no:'Not required', none:'None', placeholder:'Example: I cannot access the analytics repository and I need to deliver a change today.', queue:'Operations queue', operatorKey:'Operator key', unlock:'Open queue', refresh:'Refresh', all:'All', pending:'Pending', approve:'Approve', reject:'Reject', note:'Decision note', noCases:'No cases found.', unauthorized:'Invalid operator key.', status:'Status', created:'Created' },
+  es: { connection:'Operaciones', simulation:'n8n conectado', eyebrow:'OPERACIONES ORQUESTADAS CON N8N', demoNotice:'Los casos son procesados por n8n y guardados para revisión operativa.', title:'Convertí solicitudes desestructuradas en casos operativos responsables.', lede:'n8n y Gemini clasifican cada solicitud; una política determinista controla el escalamiento y los operadores conservan la decisión final.', incoming:'Solicitud recibida', synthetic:'Solo datos ficticios', requestLabel:'¿Qué necesita resolver el equipo de operaciones?', tryExample:'Probar un ejemplo', accessExample:'Acceso a repositorio', billingExample:'Factura incorrecta', technicalExample:'Servicio no disponible', analyze:'Crear caso', caseAnalysis:'Análisis del caso', empty:'Enviá una solicitud para crear e inspeccionar un caso.', processing:'Creando caso…', category:'Categoría', priority:'Prioridad', review:'Revisión humana', engine:'Motor de decisión', summary:'Resumen operativo', nextAction:'Próxima acción', missing:'Información faltante', retrievedProcedure:'Procedimiento recuperado', auditTrail:'Registro de auditoría', errorTitle:'No se pudo procesar la solicitud.', boundedTitle:'Decisiones limitadas', boundedText:'Las reglas deterministas controlan acciones sensibles y escalamiento.', evidenceTitle:'Evidencia visible', evidenceText:'Cada recomendación identifica el procedimiento que la fundamenta.', fallbackTitle:'Control operativo', fallbackText:'Los casos que requieren revisión siguen pendientes hasta que decide un operador.', yes:'Requerida', no:'No requerida', none:'Ninguna', placeholder:'Ejemplo: No puedo acceder al repositorio de analítica y necesito entregar un cambio hoy.', queue:'Bandeja de operaciones', operatorKey:'Clave de operador', unlock:'Abrir bandeja', refresh:'Actualizar', all:'Todos', pending:'Pendientes', approve:'Aprobar', reject:'Rechazar', note:'Nota de decisión', noCases:'No se encontraron casos.', unauthorized:'Clave de operador inválida.', status:'Estado', created:'Creado' }
 };
-
-let language = localStorage.getItem('ops-language') || 'en';
-let theme = localStorage.getItem('ops-theme') || (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-let connection = readConnection();
-const elements = Object.fromEntries(['triageForm','requestText','resultPanel','emptyState','loadingState','resultContent','errorState','errorMessage','caseId','category','priority','review','engine','summary','nextAction','missing','sourceTitle','sourceExcerpt','sourceId','auditTrail','themeButton','languageButton','connectionButton','connectionDialog','connectionForm','webhookUrl','useLocalAiButton','modeLabel'].map((id) => [id, document.getElementById(id)]));
-
-function applyTheme() {
-  document.documentElement.dataset.theme = theme;
-  elements.themeButton.setAttribute('aria-pressed', String(theme === 'dark'));
-  elements.themeButton.textContent = theme === 'dark' ? '☼' : '◐';
-}
-
-function readConnection() {
-  try { return JSON.parse(localStorage.getItem('ops-connection')) || { mode: 'server', webhookUrl: '' }; }
-  catch { return { mode: 'server', webhookUrl: '' }; }
-}
-
-function applyLanguage() {
-  const copy = translations[language];
-  document.documentElement.lang = language;
-  document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = copy[node.dataset.i18n]; });
-  elements.requestText.placeholder = copy.placeholder;
-  elements.languageButton.textContent = language === 'en' ? 'ES' : 'EN';
-  updateModeLabel();
-}
-
-function updateModeLabel() {
-  elements.modeLabel.textContent = connection.mode === 'webhook' && connection.webhookUrl ? translations[language].live : translations[language].simulation;
-}
-
-function setView(view) {
-  ['emptyState','loadingState','resultContent','errorState'].forEach((key) => { elements[key].hidden = key !== view; });
-  elements.resultPanel.setAttribute('aria-busy', view === 'loadingState' ? 'true' : 'false');
-}
-
-async function analyze(request) {
-  const endpoint = connection.mode === 'webhook' && connection.webhookUrl ? connection.webhookUrl : '/api/triage';
-  try {
-    const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ request }) });
-    const body = await response.json();
-    if (!response.ok) throw new Error(body.error || `Service returned HTTP ${response.status}.`);
-    return body;
-  } catch (error) {
-    throw error;
-  }
-}
-
-function render(result) {
-  const copy = translations[language];
-  elements.caseId.textContent = result.caseId;
-  elements.category.textContent = result.category;
-  elements.priority.textContent = result.priority;
-  elements.review.textContent = result.humanReview ? copy.yes : copy.no;
-  elements.engine.textContent = result.engine || 'deterministic-browser-v1';
-  elements.summary.textContent = result.summary;
-  elements.nextAction.textContent = result.nextAction;
-  elements.missing.replaceChildren(...(result.missing.length ? result.missing : [copy.none]).map((item) => Object.assign(document.createElement('span'), { textContent: item })));
-  elements.sourceTitle.textContent = result.procedure.title;
-  elements.sourceExcerpt.textContent = result.procedure.excerpt;
-  elements.sourceId.textContent = result.procedure.id;
-  elements.auditTrail.replaceChildren(...result.audit.map((item) => { const li = document.createElement('li'); li.textContent = item; return li; }));
-  setView('resultContent');
-}
-
-elements.triageForm.addEventListener('submit', async (event) => {
-  event.preventDefault(); setView('loadingState'); elements.caseId.textContent = 'ROUTING';
-  try { render(await analyze(elements.requestText.value)); }
-  catch (error) { elements.caseId.textContent = 'ERROR'; elements.errorMessage.textContent = error.message; setView('errorState'); }
-});
-
-document.querySelectorAll('[data-example]').forEach((button) => button.addEventListener('click', () => { elements.requestText.value = translations[language].examples[button.dataset.example]; elements.requestText.focus(); }));
-elements.languageButton.addEventListener('click', () => { language = language === 'en' ? 'es' : 'en'; localStorage.setItem('ops-language', language); applyLanguage(); });
-elements.themeButton.addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('ops-theme', theme); applyTheme(); });
-elements.connectionButton.addEventListener('click', () => {
-  elements.connectionForm.elements.mode.value = connection.mode; elements.webhookUrl.value = connection.webhookUrl; elements.connectionDialog.showModal();
-});
-elements.connectionForm.addEventListener('submit', (event) => {
-  if (event.submitter?.value !== 'save') return;
-  event.preventDefault();
-  const data = new FormData(elements.connectionForm);
-  connection = { mode: data.get('mode'), webhookUrl: String(data.get('webhookUrl') || '').trim() };
-  localStorage.setItem('ops-connection', JSON.stringify(connection)); updateModeLabel(); elements.connectionDialog.close();
-});
-elements.useLocalAiButton.addEventListener('click', () => {
-  connection = { mode: 'webhook', webhookUrl: 'http://localhost:5678/webhook/operations-desk-triage-ai' };
-  localStorage.setItem('ops-connection', JSON.stringify(connection)); updateModeLabel(); elements.connectionDialog.close();
-});
-
-applyTheme();
-applyLanguage();
+const examples = {
+  en:{access:'I cannot access the analytics repository and I need to deliver a change today.',billing:'Invoice INV-204 has an incorrect amount of USD 480.',technical:'The client portal service is unavailable for the whole support team.'},
+  es:{access:'No puedo acceder al repositorio de analítica y necesito entregar un cambio hoy.',billing:'La factura INV-204 tiene un importe incorrecto de USD 480.',technical:'El servicio del portal de clientes no está disponible para todo el equipo de soporte.'}
+};
+let language=localStorage.getItem('ops-language')||'en', theme=localStorage.getItem('ops-theme')||(matchMedia?.('(prefers-color-scheme: dark)').matches?'dark':'light');
+let operatorKey=sessionStorage.getItem('ops-operator-key')||'', currentFilter='all';
+const ids=['triageForm','requestText','resultPanel','emptyState','loadingState','resultContent','errorState','errorMessage','caseId','category','priority','review','engine','summary','nextAction','missing','sourceTitle','sourceExcerpt','sourceId','auditTrail','themeButton','languageButton','connectionButton','modeLabel','queueSection','operatorForm','operatorKey','queueContent','caseList','queueMessage','refreshCases','filterAll','filterPending'];
+const el=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
+function applyTheme(){document.documentElement.dataset.theme=theme;el.themeButton.setAttribute('aria-pressed',String(theme==='dark'));el.themeButton.textContent=theme==='dark'?'☼':'◐';}
+function applyLanguage(){const c=copy[language];document.documentElement.lang=language;document.querySelectorAll('[data-i18n]').forEach(n=>{if(c[n.dataset.i18n])n.textContent=c[n.dataset.i18n];});el.requestText.placeholder=c.placeholder;el.languageButton.textContent=language==='en'?'ES':'EN';}
+function setView(view){['emptyState','loadingState','resultContent','errorState'].forEach(k=>{el[k].hidden=k!==view;});el.resultPanel.setAttribute('aria-busy',view==='loadingState'?'true':'false');}
+async function api(url,options={}){const headers={'Content-Type':'application/json',...(options.headers||{})};if(operatorKey)headers['X-Operator-Key']=operatorKey;const response=await fetch(url,{...options,headers});const body=await response.json();if(!response.ok)throw Object.assign(new Error(body.error||`HTTP ${response.status}`),{status:response.status});return body;}
+function render(result){const c=copy[language];el.caseId.textContent=result.caseId;el.category.textContent=result.category;el.priority.textContent=result.priority;el.review.textContent=result.humanReview?c.yes:c.no;el.engine.textContent=result.engine;el.summary.textContent=result.summary;el.nextAction.textContent=result.nextAction;el.missing.replaceChildren(...(result.missing.length?result.missing:[c.none]).map(x=>Object.assign(document.createElement('span'),{textContent:x})));el.sourceTitle.textContent=result.procedure.title;el.sourceExcerpt.textContent=result.procedure.excerpt;el.sourceId.textContent=result.procedure.id;el.auditTrail.replaceChildren(...result.audit.map(x=>Object.assign(document.createElement('li'),{textContent:x})));setView('resultContent');}
+el.triageForm.addEventListener('submit',async event=>{event.preventDefault();setView('loadingState');el.caseId.textContent='ROUTING';try{const result=await api('/api/triage',{method:'POST',body:JSON.stringify({request:el.requestText.value})});render(result);if(operatorKey)await loadCases();}catch(error){el.caseId.textContent='ERROR';el.errorMessage.textContent=error.message;setView('errorState');}});
+document.querySelectorAll('[data-example]').forEach(button=>button.addEventListener('click',()=>{el.requestText.value=examples[language][button.dataset.example];el.requestText.focus();}));
+el.languageButton.addEventListener('click',()=>{language=language==='en'?'es':'en';localStorage.setItem('ops-language',language);applyLanguage();if(operatorKey)loadCases();});
+el.themeButton.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';localStorage.setItem('ops-theme',theme);applyTheme();});
+el.connectionButton.addEventListener('click',()=>{el.queueSection.scrollIntoView({behavior:'smooth'});el.operatorKey.focus();});
+el.operatorForm.addEventListener('submit',async event=>{event.preventDefault();operatorKey=el.operatorKey.value;sessionStorage.setItem('ops-operator-key',operatorKey);await loadCases();});
+el.refreshCases.addEventListener('click',loadCases);el.filterAll.addEventListener('click',()=>{currentFilter='all';loadCases();});el.filterPending.addEventListener('click',()=>{currentFilter='pending_review';loadCases();});
+async function loadCases(){try{const data=await api(`/api/cases?status=${encodeURIComponent(currentFilter)}`);el.queueContent.hidden=false;el.queueMessage.textContent='';renderCases(data.cases);}catch(error){el.queueContent.hidden=true;el.queueMessage.textContent=error.status===401?copy[language].unauthorized:error.message;}}
+function renderCases(cases){const c=copy[language];if(!cases.length){el.caseList.replaceChildren(Object.assign(document.createElement('p'),{textContent:c.noCases}));return;}el.caseList.replaceChildren(...cases.map(item=>{const card=document.createElement('article');card.className='case-card';const head=document.createElement('div');head.className='case-card-head';const title=document.createElement('strong');title.textContent=`${item.caseId} · ${item.category}`;const badge=document.createElement('span');badge.className=`case-status status-${item.status}`;badge.textContent=item.status.replace('_',' ');head.append(title,badge);const request=document.createElement('p');request.textContent=item.request;const meta=document.createElement('small');meta.textContent=`${c.created}: ${new Date(item.createdAt).toLocaleString(language)} · ${item.priority}`;card.append(head,request,meta);if(item.status==='pending_review'){const note=document.createElement('input');note.placeholder=c.note;note.maxLength=1000;const actions=document.createElement('div');actions.className='case-actions';for(const [decision,label] of [['approve',c.approve],['reject',c.reject]]){const button=document.createElement('button');button.type='button';button.className=decision==='approve'?'primary-button':'secondary-button';button.textContent=label;button.addEventListener('click',async()=>{button.disabled=true;try{await api(`/api/cases/${item.id}/decision`,{method:'POST',body:JSON.stringify({decision,note:note.value})});await loadCases();}catch(error){el.queueMessage.textContent=error.message;}finally{button.disabled=false;}});actions.append(button);}card.append(note,actions);}else if(item.decisionNote){const note=document.createElement('p');note.className='decision-note';note.textContent=item.decisionNote;card.append(note);}return card;}));}
+el.operatorKey.value=operatorKey;applyTheme();applyLanguage();if(operatorKey)loadCases();

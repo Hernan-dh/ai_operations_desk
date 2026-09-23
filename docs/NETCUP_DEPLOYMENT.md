@@ -2,12 +2,13 @@
 
 ## Topology
 
-AI Operations Desk runs as an independent stack on the same host as Ticketing. They share Caddy as the public TLS boundary but do not share databases, Docker networks, credentials, or application APIs.
+AI Operations Desk runs as an independent stack on the same host as Ticketing. It has its own PostgreSQL database and n8n state. The products share Caddy as the public TLS boundary but do not share databases, Docker networks, credentials, or application APIs.
 
 ```text
 Internet ──HTTPS──> Caddy
                      ├── Ticketing hostname ──> 127.0.0.1:3001
                      └── Operations hostname ─> 127.0.0.1:3002 ──> app ──> n8n
+                                                                  └────> PostgreSQL
 
 SSH tunnel only ──> 127.0.0.1:5678 ──> n8n editor
 ```
@@ -25,7 +26,7 @@ cd ai_operations_desk
 cp .env.example .env
 ```
 
-Generate a strong, unique `N8N_ENCRYPTION_KEY` and place it in `.env`. Keep a protected recovery copy: losing or changing this key makes stored n8n credentials unreadable. Do not reuse Ticketing secrets.
+Generate strong, distinct values for `N8N_ENCRYPTION_KEY`, `CASE_DB_PASSWORD`, and `OPERATOR_KEY` and place them in `.env`. Keep protected recovery copies: losing or changing the n8n key makes stored credentials unreadable. Do not reuse Ticketing secrets and do not use the local-development defaults on Netcup.
 
 Start the private stack:
 
@@ -33,7 +34,7 @@ Start the private stack:
 sudo docker compose config --quiet
 sudo docker compose up -d --build
 sudo docker compose ps
-sudo docker compose logs --tail=100 app n8n
+sudo docker compose logs --tail=100 app n8n postgres
 curl -fsS http://127.0.0.1:3002/healthz
 ```
 
@@ -97,16 +98,18 @@ Export material n8n workflow changes into `workflows/` before updating container
 
 ## Backup and recovery
 
-The `.n8n` directory contains workflow state, users, execution metadata, and encrypted credentials. Back it up together with the matching encryption key. Stop n8n during a filesystem-level backup:
+The `.n8n` directory contains workflow state, users, execution metadata, and encrypted credentials. PostgreSQL contains all cases and decisions. Back up both together with the matching secrets:
 
 ```bash
 cd /srv/projects/ai_operations_desk
 sudo docker compose stop n8n
 sudo tar -C /srv/projects/ai_operations_desk -czf /srv/backups/ai-operations-n8n-$(date +%F-%H%M).tgz .n8n
 sudo docker compose start n8n
+sudo docker compose exec -T postgres sh -c 'exec pg_dump -U operations_desk -d operations_desk' > /srv/backups/ai-operations-cases-$(date +%F-%H%M).sql
+test -s "$(ls -t /srv/backups/ai-operations-cases-*.sql | head -1)"
 ```
 
-Treat the archive as sensitive and test restoration outside production.
+Treat both backups as sensitive and test restoration outside production. To restore the case database, stop the application, restore a verified dump into an empty `operations_desk` database, and only then restart the application. Never test restoration against production.
 
 ## Verification
 
@@ -114,5 +117,7 @@ Treat the archive as sensitive and test restoration outside production.
 2. The three sample requests produce a rendered case.
 3. n8n execution history shows each corresponding execution.
 4. The result engine is `gemini-with-deterministic-policy-v1` when Gemini succeeds.
-5. Stopping n8n makes triage fail without generating a local result.
-6. Ticketing remains healthy at its hostname and on `127.0.0.1:3001`.
+5. A review-required case appears in the operator queue and can be approved or rejected once.
+6. A second decision on the same case returns HTTP 409.
+7. Stopping n8n makes triage fail without generating a local result.
+8. Ticketing remains healthy at its hostname and on `127.0.0.1:3001`.

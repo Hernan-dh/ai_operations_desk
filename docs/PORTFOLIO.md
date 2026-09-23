@@ -4,7 +4,7 @@
 
 Publish the application together with its required n8n service, or present it through a local screen recording. It uses synthetic requests but does not simulate successful decisions when n8n is unavailable.
 
-The Connection dialog makes the boundary explicit: both the managed route and a custom route require an n8n workflow.
+The interface makes the boundary explicit: analysis requires n8n, while approval and rejection require an operator credential and are persisted separately.
 
 ## Evidence to include
 

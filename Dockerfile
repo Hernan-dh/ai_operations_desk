@@ -1,6 +1,8 @@
 FROM node:20-alpine
 WORKDIR /app
-COPY package.json server.js triage-engine.js index.html app.js styles.css ./
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+COPY server.js case-store.js index.html app.js styles.css ./
 ENV NODE_ENV=production PORT=3000 HOST=0.0.0.0
 EXPOSE 3000
 USER node

@@ -25,7 +25,7 @@ class DocumentParser(HTMLParser):
 def main():
     parser = DocumentParser()
     parser.feed((ROOT / "index.html").read_text(encoding="utf-8"))
-    required = {"triageForm", "requestText", "resultPanel", "connectionDialog"}
+    required = {"triageForm", "requestText", "resultPanel", "queueSection", "operatorForm", "caseList"}
     errors = [f"Missing element #{item}" for item in sorted(required - parser.ids)]
     for resource in parser.resources:
         if not resource.startswith(("http://", "https://")) and not (ROOT / resource).exists():
