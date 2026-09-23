@@ -24,7 +24,7 @@ INSERT INTO operation_cases (
 SELECT
   external_id,
   CASE category
-    WHEN 'access' THEN 'Demo request ' || i || ': access to the ticketing operations dashboard is required today.'
+    WHEN 'access' THEN 'Demo request ' || i || ': access to the operations dashboard is required today.'
     WHEN 'billing' THEN 'Demo invoice INV-DEMO-' || LPAD(i::text, 3, '0') || ' has an incorrect amount of USD ' || (100 + i * 15) || '.'
     WHEN 'technical' THEN 'Demo incident ' || i || ': the ticket validation service is unavailable for the operations team.'
     ELSE 'Demo request ' || i || ': coordinate an operational update before tomorrow.'

@@ -40,7 +40,7 @@ The managed webhook URL is server configuration. A custom n8n webhook may be sel
 
 A complete deployment must run the application together with n8n; static-only GitHub Pages hosting is not functional. Credentials remain inside n8n and are never exposed to the browser or committed to the repository.
 
-On the Netcup host, this stack is isolated from Ticketing. Caddy routes a distinct hostname to the application on loopback port 3002; Ticketing remains on 3001. n8n is reachable from the application over the private Compose network and from an administrator only through an SSH tunnel to loopback port 5678.
+In production, Caddy routes the application hostname to loopback port 3002. n8n is reachable from the application over the private Compose network and from an administrator only through an SSH tunnel to loopback port 5678.
 
 ## Evolution path
 

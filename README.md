@@ -22,9 +22,9 @@ When running without Docker, set `DATABASE_URL`, `OPERATOR_KEY`, and `N8N_WEBHOO
 docker compose up -d --build
 ```
 
-Compose starts the application, PostgreSQL, and n8n. The application binds to host loopback port `3002` by default so it can coexist with Ticketing on `3001`; n8n binds to loopback port `5678`. Import and publish `workflows/triage-request-ai.json`, configure its Gemini credential, and test it before submitting requests. Use `OPERATOR_KEY` to open the operations queue.
+Compose starts the application, PostgreSQL, and n8n. The application binds to host loopback port `3002` by default and n8n binds to loopback port `5678`. Import and publish `workflows/triage-request-ai.json`, configure its Gemini credential, and test it before submitting requests. Use `OPERATOR_KEY` to open the operations queue.
 
-For deployment beside Ticketing on the Netcup server, follow [Netcup deployment](docs/NETCUP_DEPLOYMENT.md).
+For a production installation, follow the provider-neutral [deployment guide](docs/DEPLOYMENT.md).
 
 ## Connect n8n
 
