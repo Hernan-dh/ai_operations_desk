@@ -228,12 +228,23 @@ def generate_openai_compatible(
 
 def configured_attempts(prompt: str, timeout: int) -> list[tuple[str, Callable[[], tuple[str, str]]]]:
     attempts: list[tuple[str, Callable[[], tuple[str, str]]]] = []
-    gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+    gemini_keys = tuple(
+        dict.fromkeys(
+            key
+            for name in ("GEMINI_API_KEY", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4")
+            if (key := os.getenv(name, "").strip())
+        )
+    )
     configured_gemini = os.getenv("GEMINI_COMMIT_MODELS", os.getenv("GEMINI_COMMIT_MODEL", ""))
     gemini_models = tuple(item.strip() for item in configured_gemini.split(",") if item.strip()) or DEFAULT_GEMINI_MODELS
-    if gemini_key:
+    for key_index, gemini_key in enumerate(gemini_keys, start=1):
         attempts.extend(
-            (f"Gemini/{model}", lambda model=model: generate_with_gemini(prompt, model, gemini_key, timeout))
+            (
+                f"Gemini/{model}" if key_index == 1 else f"Gemini key {key_index}/{model}",
+                lambda model=model, key=gemini_key: generate_with_gemini(
+                    prompt, model, key, timeout
+                ),
+            )
             for model in gemini_models
         )
 
