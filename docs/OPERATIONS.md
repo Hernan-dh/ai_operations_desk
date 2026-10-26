@@ -30,6 +30,14 @@ When the static demo runs locally on `http://127.0.0.1:4174`, open **Connection*
 
 ## Public deployment
 
+Pushes to `main` run the GitHub Actions VPS deployment workflow. It syncs the
+source to `/srv/portfolio-demos/ai_operations_desk`, excludes the server
+`.env` and `.n8n` state, and rebuilds the Compose services without deleting
+the PostgreSQL volume. Configure `NETCUP_HOST`, `NETCUP_USER`,
+`NETCUP_SSH_KEY`, and `NETCUP_KNOWN_HOSTS` as repository secrets. The
+application is mounted publicly at `/operations`; its API requests keep that
+prefix when proxied by Caddy.
+
 Deploy the complete application, PostgreSQL, and n8n stack behind HTTPS. Set
 `N8N_SECURE_COOKIE=true`, add reverse-proxy rate limiting, keep durable volumes,
 set strong distinct secrets, and restrict editor access. Never expose the n8n
