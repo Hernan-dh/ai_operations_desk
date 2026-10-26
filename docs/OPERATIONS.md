@@ -31,7 +31,7 @@ When the static demo runs locally on `http://127.0.0.1:4174`, open **Connection*
 ## Public deployment
 
 Pushes to `main` run the GitHub Actions VPS deployment workflow. It syncs the
-source to `/srv/portfolio-demos/ai_operations_desk`, excludes the server
+source to `/srv/ai-operations-desk`, excludes the server
 `.env` and `.n8n` state, and rebuilds the Compose services without deleting
 the PostgreSQL volume. Configure `NETCUP_HOST`, `NETCUP_USER`,
 `NETCUP_SSH_KEY`, and `NETCUP_KNOWN_HOSTS` as repository secrets. The
