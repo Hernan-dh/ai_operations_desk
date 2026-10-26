@@ -35,8 +35,8 @@ source to `/srv/ai-operations-desk`, excludes the server
 `.env` and `.n8n` state, and rebuilds the Compose services without deleting
 the PostgreSQL volume. Configure `NETCUP_HOST`, `NETCUP_USER`,
 `NETCUP_SSH_KEY`, and `NETCUP_KNOWN_HOSTS` as repository secrets. The
-application is mounted publicly at `/operations`; its API requests keep that
-prefix when proxied by Caddy.
+application continues to use its dedicated public hostname. Its API requests
+also work when a reverse proxy mounts the application below a path.
 
 Deploy the complete application, PostgreSQL, and n8n stack behind HTTPS. Set
 `N8N_SECURE_COOKIE=true`, add reverse-proxy rate limiting, keep durable volumes,
