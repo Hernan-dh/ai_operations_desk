@@ -58,7 +58,7 @@ function createServer(options = {}) {
     const startedAt = Date.now();
     response.setHeader('X-Request-Id', requestId); response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'no-referrer');
-    response.setHeader('Content-Security-Policy', "default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'");
+    response.setHeader('Content-Security-Policy', "default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self' https://hernan-dh.github.io https://portfolio-hdh.duckdns.org");
     const pathname = new URL(request.url, 'http://localhost').pathname;
     const clientIp = String(request.headers['x-forwarded-for'] || request.socket.remoteAddress || '').split(',')[0].trim();
     const rate = rateLimit(clientIp);

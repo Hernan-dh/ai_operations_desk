@@ -26,6 +26,7 @@ const n8nHandler = (_request, response) => { response.writeHead(200, { 'Content-
 test('serves application and database-aware health', () => withServer(async baseUrl => {
   const health = await fetch(`${baseUrl}/healthz`); assert.equal(health.status, 200); assert.deepEqual(await health.json(), { status:'ok', database:'ok' });
   const page = await fetch(baseUrl); assert.equal(page.status, 200); assert.match(await page.text(), /Operations queue/);
+  assert.match(page.headers.get('content-security-policy'), /frame-ancestors 'self' https:\/\/hernan-dh\.github\.io https:\/\/portfolio-hdh\.duckdns\.org/);
 }));
 test('proxies through n8n and persists the case', () => withServer(async baseUrl => {
   const created = await fetch(`${baseUrl}/api/triage`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({request:'Invoice INV-204 has an incorrect amount of USD 480.'}) });

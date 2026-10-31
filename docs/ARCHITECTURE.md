@@ -34,7 +34,7 @@ n8n unavailable ──> HTTP 503; no local decision is generated
 
 The application server is the default trust boundary for input validation. It accepts triage text from 12 to 1,200 characters. Internet deployments must terminate TLS and add rate limiting at a reverse proxy or platform load balancer. The service is currently stateless and unauthenticated, so it must not be used for private operational data until authentication and durable access-controlled storage are added.
 
-The browser is untrusted. The API repeats validation, applies per-IP rate limiting, and requires a timing-safe `X-Operator-Key` check for case listing and decisions. PostgreSQL is private to the Compose network. A public deployment should also rate limit at Caddy or the provider firewall.
+The browser is untrusted. The API repeats validation, applies per-IP rate limiting, and requires a timing-safe `X-Operator-Key` check for case listing and decisions. PostgreSQL is private to the Compose network. Its CSP permits framing only by the public portfolio origins `https://hernan-dh.github.io` and `https://portfolio-hdh.duckdns.org`; all other framing is denied. A public deployment should also rate limit at Caddy or the provider firewall.
 
 The managed webhook URL is server configuration. A custom n8n webhook may be selected in the browser and stored in local storage. Both paths require n8n. Synthetic procedures deliberately avoid private organizational data.
 
